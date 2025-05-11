@@ -1,5 +1,9 @@
-package br.com.escambo.app.model;
+package br.com.escambo.app.model.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

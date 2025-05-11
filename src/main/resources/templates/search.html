@@ -1,18 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Search</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #suggestions {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ced4da;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        #suggestions div {
+            padding: 8px;
+            cursor: pointer;
+        }
+        #suggestions div:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
-    <div sec:authorize="isAuthenticated()">
-        <h1>Welcome to Search Page</h1>
-        <p>You are logged in as: <span sec:authentication="name"></span></p>
-        
-        <!-- Your search form/content here -->
-        
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout"/>
-        </form>
+<div sec:authorize="isAuthenticated()">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Escambo</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/search}">Pesquisar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/negotiations}">Negociações em andamento</a>
+                    </li>
+                </ul>
+                <form th:action="@{/logout}" method="post" class="form-inline my-2 my-lg-0">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Centered Search Bar -->
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div style="position: relative; width: 400px;">
+            <input type="text" id="search" class="form-control" placeholder="Pesquisar itens...">
+            <div id="suggestions"></div>
+        </div>
     </div>
+</div>
+
+<script>
+document.getElementById('search').addEventListener('input', async function () {
+    const query = this.value;
+    const suggestions = document.getElementById('suggestions');
+
+    if (query.length < 2) {
+        suggestions.innerHTML = '';
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/items/search?q=` + encodeURIComponent(query));
+        const items = await response.json();
+        suggestions.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item.itemname;
+            div.onclick = () => {
+                document.getElementById('search').value = item.itemname;
+                suggestions.innerHTML = '';
+                // Optionally redirect or trigger a real search
+            };
+            suggestions.appendChild(div);
+        });
+    } catch (err) {
+        console.error('Search failed:', err);
+    }
+});
+</script>
 </body>
 </html>

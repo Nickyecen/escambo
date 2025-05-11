@@ -1,4 +1,4 @@
-package br.com.escambo.app.model;
+package br.com.escambo.app.model.entities;
 
 import java.util.ArrayList;
 import java.util.List;
