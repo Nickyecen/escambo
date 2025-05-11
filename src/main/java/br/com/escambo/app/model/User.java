@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +20,18 @@ public class User {
     private String password;
 
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wish> wishes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dispose> disposetions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userStarter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Negotiation> negotiationsStarted = new ArrayList<>();
+ 
+    @OneToMany(mappedBy = "userAccepter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Negotiation> negotiationsAccepted = new ArrayList<>();   
 
     public Long getId() {
         return id;
