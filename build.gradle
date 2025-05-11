@@ -18,8 +18,21 @@ repositories {
 }
 
 dependencies {
+	// Spring Web MVC
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-crypto'
+
+	// Thymeleaf (Front)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// Database (use either JPA or JDBC)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2'
+
+	// Tests
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

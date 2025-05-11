@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search</title>
+</head>
+<body>
+    <div sec:authorize="isAuthenticated()">
+        <h1>Welcome to Search Page</h1>
+        <p>You are logged in as: <span sec:authentication="name"></span></p>
+        
+        <!-- Your search form/content here -->
+        
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+</body>
+</html>
