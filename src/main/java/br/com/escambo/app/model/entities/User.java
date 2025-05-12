@@ -3,6 +3,8 @@ package br.com.escambo.app.model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,17 +27,53 @@ public class User {
 
     private String role;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wish> wishes = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dispose> disposetions = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "userStarter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Negotiation> negotiationsStarted = new ArrayList<>();
  
+    @JsonManagedReference
     @OneToMany(mappedBy = "userAccepter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Negotiation> negotiationsAccepted = new ArrayList<>();   
+
+    public List<Wish> getWishes() {
+        return wishes;
+    }
+
+    public void setWishes(List<Wish> wishes) {
+        this.wishes = wishes;
+    }
+
+    public List<Dispose> getDisposetions() {
+        return disposetions;
+    }
+
+    public void setDisposetions(List<Dispose> disposetions) {
+        this.disposetions = disposetions;
+    }
+
+    public List<Negotiation> getNegotiationsStarted() {
+        return negotiationsStarted;
+    }
+
+    public void setNegotiationsStarted(List<Negotiation> negotiationsStarted) {
+        this.negotiationsStarted = negotiationsStarted;
+    }
+
+    public List<Negotiation> getNegotiationsAccepted() {
+        return negotiationsAccepted;
+    }
+
+    public void setNegotiationsAccepted(List<Negotiation> negotiationsAccepted) {
+        this.negotiationsAccepted = negotiationsAccepted;
+    }
 
     public Long getId() {
         return id;

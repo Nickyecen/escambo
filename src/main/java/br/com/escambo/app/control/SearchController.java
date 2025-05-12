@@ -1,10 +1,36 @@
 package br.com.escambo.app.control;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import br.com.escambo.app.model.DisposeRepository;
+import br.com.escambo.app.model.ItemRepository;
+import br.com.escambo.app.model.entities.Dispose;
+import br.com.escambo.app.model.entities.Item;
+import br.com.escambo.app.model.entities.User;
 
 @Controller public class SearchController {
-    @GetMapping("/search") public String searchPage() {
-        return "search";
+
+    @Autowired ItemRepository itemRepository;
+    @Autowired DisposeRepository disposeRepository;
+    
+    @GetMapping("/search")
+    public String searchPage(@RequestParam(name = "q", required = false) String query, Model model) {
+        if(Objects.isNull(query) || query.isBlank()) return "search";
+
+        Item item = itemRepository.findByItemname(query);
+        List<Dispose> disposes = disposeRepository.findByItemId(item.getId());
+        List<String> usernames = disposes.stream().map(Dispose::getUser).map(User::getUsername).toList();
+
+        model.addAttribute("itemname", item.getItemname());
+        model.addAttribute("results", usernames);
+
+        return "searchresults";
     }
 }

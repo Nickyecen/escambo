@@ -3,6 +3,8 @@ package br.com.escambo.app.model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,11 +20,13 @@ import jakarta.persistence.OneToMany;
     @Column(unique = true)
     private String itemname;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wish> wishes = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dispose> Disposetions = new ArrayList<>();
+    private List<Dispose> disposetions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -49,10 +53,10 @@ import jakarta.persistence.OneToMany;
     }
 
     public List<Dispose> getDisposetions() {
-        return Disposetions;
+        return disposetions;
     }
 
     public void setDisposetions(List<Dispose> disposetions) {
-        Disposetions = disposetions;
+        this.disposetions = disposetions;
     }
 }

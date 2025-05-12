@@ -1,5 +1,7 @@
 package br.com.escambo.app.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,9 +13,11 @@ import jakarta.persistence.ManyToOne;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne @JoinColumn(name = "user_s_id", nullable = false)
     private User userStarter;
 
+    @JsonBackReference
     @ManyToOne @JoinColumn(name = "user_a_id", nullable = false)
     private User userAccepter;
 

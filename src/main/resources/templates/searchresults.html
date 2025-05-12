@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Search</title>
+    <meta charset="UTF-8">
+    <title>Resultados da Pesquisa</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -25,34 +25,41 @@
     </style>
 </head>
 <body>
-<div sec:authorize="isAuthenticated()">
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">Escambo</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/search}">Pesquisar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/negotiations}">Negociações em andamento</a>
-                    </li>
-                </ul>
-                <form th:action="@{/logout}" method="post" class="form-inline my-2 my-lg-0">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</button>
-                </form>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Centered Search Bar -->
-    <div class="d-flex align-items-center justify-content-center vh-100">
-        <form th:action="@{/search}" method="get" style="position: relative; width: 400px;">
-            <input type="text" id="search" class="form-control" name="q" placeholder="Pesquisar itens..." th:value="${query}">
-            <div id="suggestions"></div>
-        </form>
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">Escambo</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/search}">Pesquisar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/negotiations}">Negociações em andamento</a>
+                </li>
+            </ul>
+            <form th:action="@{/logout}" method="post" class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+        </div>
     </div>
+</nav>
+
+<!-- Search Bar (below navbar with padding) -->
+<div class="container mt-4">
+    <form th:action="@{/search}" method="get" style="position: relative; width: 400px;">
+        <input type="text" id="search" class="form-control" name="q" placeholder="Pesquisar itens..." th:value="${itemname}">
+        <div id="suggestions"></div>
+    </form>
+</div>
+
+<!-- Search Results -->
+<div class="container mt-4">
+    <h4 th:text="'Resultados para: ' + ${itemname}"></h4>
+    <ul class="list-group mt-3">
+        <li class="list-group-item" th:each="result : ${results}" th:text="${result} + ': ' + ${itemname}"></li>
+    </ul>
 </div>
 
 <script>
