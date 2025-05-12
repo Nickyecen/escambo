@@ -33,15 +33,7 @@ public class User {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dispose> disposetions = new ArrayList<>();
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "userStarter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Negotiation> negotiationsStarted = new ArrayList<>();
- 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "userAccepter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Negotiation> negotiationsAccepted = new ArrayList<>();   
+    private List<Dispose> disposetions = new ArrayList<>();   
 
     public List<Wish> getWishes() {
         return wishes;
@@ -57,22 +49,6 @@ public class User {
 
     public void setDisposetions(List<Dispose> disposetions) {
         this.disposetions = disposetions;
-    }
-
-    public List<Negotiation> getNegotiationsStarted() {
-        return negotiationsStarted;
-    }
-
-    public void setNegotiationsStarted(List<Negotiation> negotiationsStarted) {
-        this.negotiationsStarted = negotiationsStarted;
-    }
-
-    public List<Negotiation> getNegotiationsAccepted() {
-        return negotiationsAccepted;
-    }
-
-    public void setNegotiationsAccepted(List<Negotiation> negotiationsAccepted) {
-        this.negotiationsAccepted = negotiationsAccepted;
     }
 
     public Long getId() {

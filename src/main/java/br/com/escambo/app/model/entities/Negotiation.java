@@ -14,16 +14,16 @@ import jakarta.persistence.ManyToOne;
     private Long id;
 
     @JsonBackReference
-    @ManyToOne @JoinColumn(name = "user_s_id", nullable = false)
-    private User userStarter;
+    @ManyToOne @JoinColumn(name = "dispose_A_id", nullable = false)
+    private Dispose disposeA;
 
     @JsonBackReference
-    @ManyToOne @JoinColumn(name = "user_a_id", nullable = false)
-    private User userAccepter;
-
-    private boolean userSOk = false;
+    @ManyToOne @JoinColumn(name = "dispose_B_id", nullable = false)
+    private Dispose disposeB;
 
     private boolean userAOk = false;
+
+    private boolean userBOk = false;
 
     public Long getId() {
         return id;
@@ -31,22 +31,6 @@ import jakarta.persistence.ManyToOne;
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUserStarter() {
-        return userStarter;
-    }
-
-    public void setUserStarter(User userStarter) {
-        this.userStarter = userStarter;
-    }
-
-    public User getUserAccepter() {
-        return userAccepter;
-    }
-
-    public void setUserAccepter(User userAccepter) {
-        this.userAccepter = userAccepter;
     }
 
     public boolean isUserAOk() {
@@ -57,11 +41,30 @@ import jakarta.persistence.ManyToOne;
         this.userAOk = userAOk;
     }
 
-    public boolean isUserSOk() {
-        return userSOk;
+    public Dispose getDisposeA() {
+        return disposeA;
     }
 
-    public void setUserSOk(boolean userSOk) {
-        this.userSOk = userSOk;
+    public void setDisposeA(Dispose disposeA) {
+        this.disposeA = disposeA;
     }
+
+    public Dispose getDisposeB() {
+        return disposeB;
+    }
+
+    public void setDisposeB(Dispose disposeB) {
+        this.disposeB = disposeB;
+    }
+
+    public boolean isUserBOk() {
+        return userBOk;
+    }
+
+    public void setUserBOk(boolean userBOk) {
+        this.userBOk = userBOk;
+    }
+
+    
+
 }
