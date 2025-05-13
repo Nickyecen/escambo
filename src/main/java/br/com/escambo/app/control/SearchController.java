@@ -19,10 +19,10 @@ import br.com.escambo.app.model.entities.User;
 
     @Autowired ItemRepository itemRepository;
     @Autowired DisposeRepository disposeRepository;
-    
+
     @GetMapping("/search")
     public String searchPage(@RequestParam(name = "q", required = false) String query, Model model) {
-        if(Objects.isNull(query) || query.isBlank()) return "search";
+        if(Objects.isNull(query) || query.isBlank()) return "pages/search";
 
         Item item = itemRepository.findByItemname(query);
         List<Dispose> disposes = disposeRepository.findByItemId(item.getId());
@@ -31,6 +31,6 @@ import br.com.escambo.app.model.entities.User;
         model.addAttribute("itemname", item.getItemname());
         model.addAttribute("results", usernames);
 
-        return "searchresults";
+        return "pages/searchresults";
     }
 }

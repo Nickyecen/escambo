@@ -31,7 +31,7 @@ import br.com.escambo.app.model.entities.User;
         model.addAttribute("negotiations", negotiations);
         model.addAttribute("currentUser", currentUser);
 
-        return "negotiations";
+        return "pages/negotiations";
     }
 
     @PostMapping("/confirm") public String confirmNegotation(@RequestParam("negotiationId") Long negotiationId, Principal principal) {

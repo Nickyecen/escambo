@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main :: html(
+          pageTitle='Resultados da pesquisa',
+          currentPage='searchresults',
+          content=~{::main}
+      )}">
+<main>
+<body>
+<!-- Search Bar (below navbar with padding) -->
+<div class="container mt-4">
+    <div th:replace="~{fragments/searchbar :: searchbar}"></div>
+</div>
+
+<!-- Search Results -->
+<div class="container mt-4">
+    <h4 th:text="'Resultados para: ' + ${itemname}"></h4>
+    <ul class="list-group mt-3">
+        <li class="list-group-item" th:each="result : ${results}" th:text="${result} + ': ' + ${itemname}"></li>
+    </ul>
+</div>
+</body>
+</main>
+</html>

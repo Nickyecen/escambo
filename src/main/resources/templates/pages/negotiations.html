@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/main :: html(
+          pageTitle='Negociações',
+          currentPage='negotiations',
+          content=~{::main}
+      )}">
+<body>
+    <main>
+        <div class="container mt-5">
+            <h2>Negociações em andamento</h2>
+            <ul class="list-group mt-4" th:if="${negotiations.size()} > 0">
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    th:each="negotiation : ${negotiations}">
+                    <span>
+                        <span th:text="${negotiation.disposeA.user.username == currentUser.username} ? ${negotiation.disposeA.item.itemname} : ${negotiation.disposeB.item.itemname}"></span>
+                        x
+                        <span th:text="${negotiation.disposeA.user.username != currentUser.username} ? ${negotiation.disposeA.item.itemname} : ${negotiation.disposeB.item.itemname}"></span>
+                        :
+                        <span th:text="${negotiation.disposeA.user.username != currentUser.username} ? ${negotiation.disposeA.user.username} : ${negotiation.disposeB.user.username}"></span>
+                    </span>
+                    <form th:action="@{/negotiations/confirm}" method="post">
+                        <input type="hidden" name="negotiationId" th:value="${negotiation.id}"/>
+                        <button type="submit" class="btn"
+                            th:classappend="${(negotiation.disposeA.user.username == currentUser.username && negotiation.userAOk) || (negotiation.disposeB.user.username == currentUser.username && negotiation.userBOk)} ? 'btn-secondary disabled' : 'btn-success'"
+                            th:text="${(negotiation.disposeA.user.username == currentUser.username && negotiation.userAOk) || (negotiation.disposeB.user.username == currentUser.username && negotiation.userBOk)} ? 'Waiting for the other user...' : 'Confirmar Troca'">
+                        </button>
+                    </form>
+                </li>
+            </ul>
+            <p class="text-muted" th:if="${negotiations.size()} == 0">Nenhuma negociação em andamento.</p>
+        </div>
+    </main>
+</body>
+</html>

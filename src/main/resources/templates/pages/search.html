@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/main :: html(
+          pageTitle='Pesquisa',
+          currentPage='search',
+          content=~{::main}
+      )}">
+<main>
+<body>
+<div sec:authorize="isAuthenticated()">
+    <!-- Centered Search Bar -->
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div th:replace="~{fragments/searchbar :: searchbar}"></div>
+    </div>
+</div>
+</body>
+</html>
