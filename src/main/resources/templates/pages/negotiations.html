@@ -24,7 +24,7 @@
                         <input type="hidden" name="negotiationId" th:value="${negotiation.id}"/>
                         <button type="submit" class="btn"
                             th:classappend="${(negotiation.disposeA.user.username == currentUser.username && negotiation.userAOk) || (negotiation.disposeB.user.username == currentUser.username && negotiation.userBOk)} ? 'btn-secondary disabled' : 'btn-success'"
-                            th:text="${(negotiation.disposeA.user.username == currentUser.username && negotiation.userAOk) || (negotiation.disposeB.user.username == currentUser.username && negotiation.userBOk)} ? 'Waiting for the other user...' : 'Confirmar Troca'">
+                            th:text="${(negotiation.disposeA.user.username == currentUser.username && negotiation.userAOk) || (negotiation.disposeB.user.username == currentUser.username && negotiation.userBOk)} ? 'Esperando confirmação do outro usuário...' : 'Confirmar Troca'">
                         </button>
                     </form>
                 </li>
