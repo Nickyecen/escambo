@@ -27,20 +27,20 @@ import br.com.escambo.app.model.UserRepository;
         return args -> {
 
             User user1 = new User();
-            user1.setUsername("user");
+            user1.setUsername("leo");
             user1.setPassword(passwordEncoder.encode("password"));
             user1.setRole("ROLE_USER");
             userRepository.save(user1);
 
             User user2 = new User();
-            user2.setUsername("admin");
-            user2.setPassword(passwordEncoder.encode("admin"));
-            user2.setRole("ROLE_ADMIN");
+            user2.setUsername("joao");
+            user2.setPassword(passwordEncoder.encode("password"));
+            user2.setRole("ROLE_USER");
             userRepository.save(user2);
 
             List<String> items = new ArrayList<>();
-            items.add("Book"); items.add("Notebook"); items.add("Gibi Turma da Mônica");
-            items.add("Livro Anthom"); items.add("Caneta Bic");
+            items.add("CD Capital Inicial - Acústico"); items.add("Livro Mafalda"); items.add("Gibi Turma da Mônica");
+            items.add("CD Van Halen"); items.add("Caneta Bic");
 
             for(String itemname : items) {
                 if (itemRepository.findByItemname(itemname) == null) {
@@ -50,10 +50,10 @@ import br.com.escambo.app.model.UserRepository;
                 }
             } 
 
-            Item item1 = itemRepository.findByItemname("Book");
-            Item item2 = itemRepository.findByItemname("Notebook");
+            Item item1 = itemRepository.findByItemname("CD Capital Inicial - Acústico");
+            Item item2 = itemRepository.findByItemname("Livro Mafalda");
             Item item3 = itemRepository.findByItemname("Gibi Turma da Mônica");
-            Item item4 = itemRepository.findByItemname("Livro Anthom");
+            Item item4 = itemRepository.findByItemname("CD Van Halen");
             Item item5 = itemRepository.findByItemname("Caneta Bic");
 
             Dispose dispose1 = new Dispose();
