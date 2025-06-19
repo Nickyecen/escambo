@@ -1,4 +1,4 @@
-package br.com.escambo.app.controller;
+package br.com.escambo.app.control;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
