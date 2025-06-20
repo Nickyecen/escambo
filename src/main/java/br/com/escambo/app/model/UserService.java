@@ -26,5 +26,17 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public boolean banUserByUsername(Long modId, String username) {
+        User userBan = userRepository.findByUsername(username);
+        if (userBan == null) {
+            return false;
+        }
+        // registrar o ID do moderador que fez o banimento, se necessário
+        // Ou ver se o moderador é válido, caso um usuario comum tenha acesso a /mods
+        userBan.setBanned(true);
+        userRepository.save(userBan);
+        return true;
+    }
 }
 
