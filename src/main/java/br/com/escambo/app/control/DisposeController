@@ -13,6 +13,7 @@ import br.com.escambo.app.model.UserRepository;
 import br.com.escambo.app.model.entities.Dispose;
 import br.com.escambo.app.model.entities.Item;
 import br.com.escambo.app.model.entities.User;
+import br.com.escambo.app.model.MatchService;
 
 @Controller
 @RequestMapping("/disposelist")
@@ -20,6 +21,7 @@ public class DisposeController {
     @Autowired DisposeRepository disposeRepository;
     @Autowired ItemRepository itemRepository;
     @Autowired UserRepository userRepository;
+    @Autowired MatchService matchService;
 
     @GetMapping
     public String listDispos(Model model, Principal principal) {
@@ -38,7 +40,6 @@ public class DisposeController {
             model.addAttribute("error", "Item não aprovado.");
             return "redirect:/disposelist";
         }
-        // Verifica se já existe
         boolean exists = disposeRepository.findByItemId(itemId)
             .stream().anyMatch(d -> d.getUser().getId().equals(user.getId()));
         if (!exists) {
@@ -46,6 +47,8 @@ public class DisposeController {
             dispose.setUser(user);
             dispose.setItem(item);
             disposeRepository.save(dispose);
+            // Chama o match automático
+            matchService.procurarMatchesParaUsuario(user);
         }
         return "redirect:/disposelist";
     }

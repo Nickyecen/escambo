@@ -13,6 +13,7 @@ import br.com.escambo.app.model.UserRepository;
 import br.com.escambo.app.model.entities.Wish;
 import br.com.escambo.app.model.entities.Item;
 import br.com.escambo.app.model.entities.User;
+import br.com.escambo.app.model.MatchService;
 
 @Controller
 @RequestMapping("/wishlist")
@@ -20,6 +21,7 @@ public class WishController {
     @Autowired WishRepository wishRepository;
     @Autowired ItemRepository itemRepository;
     @Autowired UserRepository userRepository;
+    @Autowired MatchService matchService;
 
     @GetMapping
     public String listWishes(Model model, Principal principal) {
@@ -31,24 +33,24 @@ public class WishController {
     }
 
     @PostMapping("/add")
-    public String addWish(@RequestParam Long itemId, Principal principal, Model model) {
-        User user = userRepository.findByUsername(principal.getName());
-        Item item = itemRepository.findById(itemId).orElse(null);
-        if (item == null) {
-            model.addAttribute("error", "Item não aprovado.");
-            return "redirect:/wishlist";
-        }
-        // Verifica se já existe
-        boolean exists = wishRepository.findByItemId(itemId)
-            .stream().anyMatch(w -> w.getUser().getId().equals(user.getId()));
-        if (!exists) {
-            Wish wish = new Wish();
-            wish.setUser(user);
-            wish.setItem(item);
-            wishRepository.save(wish);
-        }
+public String addWish(@RequestParam Long itemId, Principal principal, Model model) {
+    User user = userRepository.findByUsername(principal.getName());
+    Item item = itemRepository.findById(itemId).orElse(null);
+    if (item == null) {
+        model.addAttribute("error", "Item não aprovado.");
         return "redirect:/wishlist";
     }
+    boolean exists = wishRepository.findByItemId(itemId)
+        .stream().anyMatch(w -> w.getUser().getId().equals(user.getId()));
+    if (!exists) {
+        Wish wish = new Wish();
+        wish.setUser(user);
+        wish.setItem(item);
+        wishRepository.save(wish);
+        matchService.procurarMatchesParaUsuario(user);
+    }
+    return "redirect:/wishlist";
+}
 
     @PostMapping("/remove")
     public String removeWish(@RequestParam Long wishId, Principal principal) {
