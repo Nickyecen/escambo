@@ -20,8 +20,8 @@ public class ModService {
             return false;
         }
         //Moderador nao bane outreo moderador, isso faz o administrador
-        if(userBan.getRole().equals("MOD")) {
-            return false; 
+        if(userBan.getRole().equals("ROLE_MOD")) {
+            return false;
         }
         // Ou ver se o moderador é válido, caso um usuario comum tenha acesso a /mods
         if (userBan.getBanned()) {
@@ -41,8 +41,8 @@ public class ModService {
             return false;
         }
         //Moderador nao desbane outro moderador, isso faz o administrador
-        if(userUnban.getRole().equals("MOD")) {
-            return false; 
+        if(userUnban.getRole().equals("ROLE_MOD")) {
+            return false;
         }
         userUnban.setBanned(false);
         userService.save(userUnban);
@@ -81,4 +81,3 @@ public class ModService {
     }
 
 }
-

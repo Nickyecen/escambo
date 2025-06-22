@@ -41,6 +41,12 @@ import br.com.escambo.app.model.WishRepository;
             user2.setRole("ROLE_USER");
             userRepository.save(user2);
 
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setRole("ROLE_ADMIN");
+            userRepository.save(admin);
+
             List<String> items = new ArrayList<>();
             items.add("CD Capital Inicial - Acústico"); items.add("Livro Mafalda"); items.add("Gibi Turma da Mônica");
             items.add("CD Van Halen"); items.add("Caneta Bic");
@@ -51,7 +57,7 @@ import br.com.escambo.app.model.WishRepository;
                     item.setItemname(itemname);
                     itemRepository.save(item);
                 }
-            } 
+            }
 
             Item item1 = itemRepository.findByItemname("CD Capital Inicial - Acústico");
             Item item2 = itemRepository.findByItemname("Livro Mafalda");

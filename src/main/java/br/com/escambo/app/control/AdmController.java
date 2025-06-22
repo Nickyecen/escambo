@@ -19,14 +19,14 @@ public class AdmController {
     @Autowired private UserRepository userRepository;
     @Autowired private MaintenanceService maintenanceService;
 
-    @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('adm'))")
+    @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN'))")
     @PostMapping("/maintenance/on")
     public String enableMaintenance(Principal principal) {
         maintenanceService.setMaintenanceMode(true, principal.getName());
         return "redirect:/adm";
     }
 
-    @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('adm'))")
+    @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN'))")
     @PostMapping("/maintenance/off")
     public String disableMaintenance(Principal principal) {
         maintenanceService.setMaintenanceMode(false, principal.getName());
@@ -34,10 +34,11 @@ public class AdmController {
     }
 
     // Lista todos os usuários e moderadores
-    @GetMapping("/moderators")
+   @GetMapping("/moderators")
     public String listModerators(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        return "pages/moderators";
+    model.addAttribute("users", userRepository.findAll());
+    model.addAttribute("maintenanceMode", maintenanceService.isMaintenanceMode());
+    return "pages/moderators";
     }
 
     // Promove usuário a moderador
@@ -45,7 +46,7 @@ public class AdmController {
     public String addModerator(@RequestParam Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            user.setRole("mod");
+            user.setRole("ROLE_MOD");
             userRepository.save(user);
         }
         return "redirect:/adm/moderators";
@@ -55,8 +56,8 @@ public class AdmController {
     @PostMapping("/moderators/remove")
     public String removeModerator(@RequestParam Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        if (user != null && "mod".equals(user.getRole())) {
-            user.setRole("usr");
+        if (user != null && "ROLE_MOD".equals(user.getRole())) {
+            user.setRole("ROLE_USER");
             userRepository.save(user);
         }
         return "redirect:/adm/moderators";

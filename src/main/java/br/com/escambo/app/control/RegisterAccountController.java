@@ -34,7 +34,7 @@ public class RegisterAccountController {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole("USR");
+        user.setRole("ROLE_USER");
         userService.save(user);
         return "redirect:/login";
     }
