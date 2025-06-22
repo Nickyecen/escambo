@@ -23,9 +23,18 @@
                                 <a class="nav-link" th:classappend="${currentPage == 'disposelist'} ? 'active' : ''" th:href="@{/disposelist}">Meus itens</a>
                             </li>
                         </ul>
-                        <form th:action="@{/logout}" method="post" class="form-inline my-2 my-lg-0">
-                            <button class="btn btn-outline-light" type="submit">Encerrar sessão</button>
-                        </form>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.name}">username</button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">Excluir conta</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form th:action="@{/logout}" method="post">
+                                        <button class="dropdown-item" type="submit">Encerrar sessão</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
