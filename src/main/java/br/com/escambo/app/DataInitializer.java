@@ -12,16 +12,19 @@ import br.com.escambo.app.model.entities.Dispose;
 import br.com.escambo.app.model.entities.Item;
 import br.com.escambo.app.model.entities.Negotiation;
 import br.com.escambo.app.model.entities.User;
+import br.com.escambo.app.model.entities.Wish;
 import br.com.escambo.app.model.DisposeRepository;
 import br.com.escambo.app.model.ItemRepository;
 import br.com.escambo.app.model.NegotiationRepository;
 import br.com.escambo.app.model.UserRepository;
+import br.com.escambo.app.model.WishRepository;
 
 @Configuration public class DataInitializer {
 
     @Bean public CommandLineRunner initData(UserRepository userRepository,
                                             PasswordEncoder passwordEncoder,
                                             ItemRepository itemRepository,
+                                            WishRepository wishRepository,
                                             DisposeRepository disposeRepository,
                                             NegotiationRepository negotiationRepository) {
         return args -> {
@@ -84,6 +87,26 @@ import br.com.escambo.app.model.UserRepository;
             negotiation2.setDisposeA(dispose2);
             negotiation2.setDisposeB(dispose4);
             negotiationRepository.save(negotiation2);
+
+            Wish wish1 = new Wish();
+            wish1.setUser(user1);
+            wish1.setItem(item3);
+            wishRepository.save(wish1);
+
+            Wish wish2 = new Wish();
+            wish2.setUser(user1);
+            wish2.setItem(item4);
+            wishRepository.save(wish2);
+
+            Wish wish3 = new Wish();
+            wish3.setUser(user2);
+            wish3.setItem(item1);
+            wishRepository.save(wish3);
+
+            Wish wish4 = new Wish();
+            wish4.setUser(user2);
+            wish4.setItem(item2);
+            wishRepository.save(wish4);
         };
     }
 }

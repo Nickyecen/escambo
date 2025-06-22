@@ -53,7 +53,7 @@ public String addWish(@RequestParam Long itemId, Principal principal, Model mode
 }
 
     @PostMapping("/remove")
-    public String removeWish(@RequestParam Long wishId, Principal principal) {
+    public String removeWish(@RequestParam("wishId") Long wishId, Principal principal) {
         Wish wish = wishRepository.findById(wishId).orElse(null);
         if (wish != null && wish.getUser().getUsername().equals(principal.getName())) {
             wishRepository.delete(wish);

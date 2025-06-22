@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/main :: html(
+          pageTitle='Lista de desejos',
+          currentPage='wishlist',
+          content=~{::main}
+      )}">
+<body>
+    <main>
+        <div class="container mt-5">
+            <div class="d-flex justify-content-between">
+                <h2>Lista de desejos</h2>
+                <!-- TODO: Adicionar item -->
+                <button type="submit" class="btn btn-success">Adicionar item</button>
+            </div>
+            <ul class="list-group mt-4" th:if="${wishes.size()} > 0">
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    th:each="wish : ${wishes}">
+                    <span>
+                        <span th:text="${wish.item.itemname}"></span>
+                    </span>
+                    <form th:action="@{/wishlist/remove}" method="post">
+                        <input type="hidden" name="wishId" th:value="${wish.id}"/>
+                        <button type="submit" class="btn btn-danger">Remover</button>
+                    </form>
+                </li>
+            </ul>
+            <p class="text-muted" th:if="${wishes.size()} == 0">Nenhum item na lista de desejos.</p>
+        </div>
+    </main>
+</body>
+</html>
