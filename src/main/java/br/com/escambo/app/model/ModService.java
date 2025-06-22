@@ -1,21 +1,18 @@
 package br.com.escambo.app.model;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import br.com.escambo.app.model.entities.Item;
+import org.springframework.beans.factory.annotation.Autowired;
 import br.com.escambo.app.model.entities.ItemRequest;
 import br.com.escambo.app.model.entities.User;
-
+import br.com.escambo.app.model.entities.Interaction;
 @Service
 public class ModService {
 
-    private final UserService userService;
-    private final ItemService itemService;
-
-    public ModService(UserService userService, ItemService itemService) {
-        this.userService = userService;
-        this.itemService = itemService;
-    }
+    @Autowired  UserService userService;
+    @Autowired  ItemService itemService;
+    @Autowired  InteractionService interactionService;
     @Transactional
     public boolean banUserByUsername(Long modId, String username) {
         User userBan = userService.findByUsername(username);
@@ -26,10 +23,30 @@ public class ModService {
         if(userBan.getRole().equals("MOD")) {
             return false; 
         }
-        // registrar o ID do moderador que fez o banimento, se necessário
         // Ou ver se o moderador é válido, caso um usuario comum tenha acesso a /mods
+        if (userBan.getBanned()) {
+            return false; // Usuario ja esta banido
+        }
+
         userBan.setBanned(true);
         userService.save(userBan);
+        interactionService.createInteraction("ban", userBan.getId(), modId);
+        return true;
+    }
+
+    @Transactional
+    public boolean unbanUserByUsername(Long modId, String username) {
+        User userUnban = userService.findByUsername(username);
+        if (userUnban == null) {
+            return false;
+        }
+        //Moderador nao desbane outro moderador, isso faz o administrador
+        if(userUnban.getRole().equals("MOD")) {
+            return false; 
+        }
+        userUnban.setBanned(false);
+        userService.save(userUnban);
+        interactionService.createInteraction("unban", userUnban.getId(), modId);
         return true;
     }
     @Transactional
@@ -49,6 +66,18 @@ public class ModService {
         itemService.deleteItemRequest(req);
         return true; //Deletou o pedido de item e criou o item se aprovado
 
+    }
+
+    public List<Interaction> getBanHistory(Long modId, Long userId) {
+        User user = userService.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado com id: " + userId);
+        }
+        List<Interaction> interactions = interactionService.findInteractionByTargetUsername(user.getUsername());
+        if (interactions.isEmpty()) {
+            throw new RuntimeException("Nada encontrado no historico do usuário: " + user.getUsername());
+        }
+        return interactions;
     }
 
 }
