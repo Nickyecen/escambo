@@ -10,6 +10,7 @@ public class MatchService {
     @Autowired WishRepository wishRepository;
     @Autowired DisposeRepository disposeRepository;
     @Autowired NegotiationRepository negotiationRepository;
+    @Autowired NotificationService notificationService;
 
     public void procurarMatchesParaUsuario(User user) {
         List<Wish> wishes = user.getWishes();
@@ -29,6 +30,8 @@ public class MatchService {
                         negotiation.setDisposeA(dispose); 
                         negotiation.setDisposeB(dispose);
                         negotiationRepository.save(negotiation);
+                        notificationService.notifyUser(user.getUsername(), "Novo match encontrado para o item: " + wish.getItem().getItemname());
+                        notificationService.notifyUser(dispose.getUser().getUsername(), "Seu item '" + wish.getItem().getItemname() + "' foi encontrado em um match!");
                     }
                 }
             }

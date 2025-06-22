@@ -14,6 +14,7 @@ import br.com.escambo.app.model.entities.TokenTransaction;
     @Autowired UserRepository userRepository;
     @Autowired DisposeRepository disposeRepository;
     @Autowired private TokenTransactionRepository tokenTransactionRepository;
+    @Autowired NotificationService notificationService;
 
     public void confirmNegotiation(Long negotiationId, String username) {
         Negotiation negotiation = negotiationRepository.getReferenceById(negotiationId);
@@ -50,5 +51,8 @@ import br.com.escambo.app.model.entities.TokenTransaction;
         negotiation.setDisposeA(proposerDispose);
         negotiation.setDisposeB(targetDispose);
         negotiationRepository.save(negotiation);
+        notificationService.notifyUser(targetDispose.getUser().getUsername(),
+        "Você recebeu uma proposta de negociação do usuário " + proposerDispose.getUser().getUsername() +
+        " pelo item '" + targetDispose.getItem().getItemname() + "'.");
     }
 }
