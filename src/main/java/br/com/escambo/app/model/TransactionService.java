@@ -1,15 +1,11 @@
-package br.com.escambo.app.service;
+package br.com.escambo.app.model;
 
-import br.com.escambo.app.model.TokenTransactionRepository;
 import br.com.escambo.app.model.entities.TokenTransaction;
 import br.com.escambo.app.model.entities.User;
 import br.com.escambo.app.model.entities.Item;
 import br.com.escambo.app.model.entities.Dispose;
-import br.com.escambo.app.model.ItemRepository;
-import br.com.escambo.app.model.DisposeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.escambo.app.model.UserService;
 
 
 @Service

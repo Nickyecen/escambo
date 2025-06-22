@@ -54,7 +54,6 @@ import br.com.escambo.app.model.UserRepository;
             Item item2 = itemRepository.findByItemname("Livro Mafalda");
             Item item3 = itemRepository.findByItemname("Gibi Turma da Mônica");
             Item item4 = itemRepository.findByItemname("CD Van Halen");
-            Item item5 = itemRepository.findByItemname("Caneta Bic");
 
             Dispose dispose1 = new Dispose();
             dispose1.setItem(item1);
