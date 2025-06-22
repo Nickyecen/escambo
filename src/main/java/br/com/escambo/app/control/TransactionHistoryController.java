@@ -16,8 +16,13 @@ import java.util.List;
 public class TransactionHistoryController {
 
     @Autowired TokenTransactionRepository tokenTransactionRepository;
-    @Autowired UserRepository userRepository;
+    @Autowired TransactionService transactionService;
 
+    @PostMapping("/transactions/cancel")
+    public String cancelTransaction(@RequestParam Long transactionId, Principal principal) {
+        transactionService.cancelTransaction(transactionId, principal.getName());
+        return "redirect:/transactions";
+    }
     @GetMapping("/transactions")
     public String viewTransactions(Model model, Principal principal) {
         String username = principal.getName();
