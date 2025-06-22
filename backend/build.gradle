@@ -24,9 +24,10 @@ dependencies {
 	// Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-crypto'
-	
-	// Thymeleaf (Front)
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+
+	// Swagger/OpenAPI
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
 	// Database (use either JPA or JDBC)
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
