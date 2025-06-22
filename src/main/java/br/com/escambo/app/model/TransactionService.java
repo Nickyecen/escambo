@@ -9,6 +9,8 @@ import br.com.escambo.app.model.ItemRepository;
 import br.com.escambo.app.model.DisposeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.escambo.app.model.UserService;
+
 
 @Service
 public class TransactionService {
@@ -20,7 +22,7 @@ public class TransactionService {
 
     public void cancelTransaction(Long transactionId, String username) {
         TokenTransaction tx = tokenTransactionRepository.findById(transactionId).orElse(null);
-        if (tx != null && ((tx.getUserA().equals(username) != null) || (tx.getUserB().equals(username) != null))) {
+        if (tx != null && ((tx.getUserA().equals(username)) || (tx.getUserB().equals(username)))) {
             // Restore itemA to userA
             Item itemA = itemRepository.findById(tx.getItemAId()).orElse(null);
             User userA = userService.findByUsername(tx.getUserA());

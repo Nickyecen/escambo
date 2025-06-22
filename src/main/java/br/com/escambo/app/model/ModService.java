@@ -2,6 +2,7 @@ package br.com.escambo.app.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.escambo.app.model.entities.User;
 
