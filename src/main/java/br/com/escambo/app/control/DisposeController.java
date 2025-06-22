@@ -54,7 +54,7 @@ public class DisposeController {
     }
 
     @PostMapping("/remove")
-    public String removeDispose(@RequestParam Long disposeId, Principal principal) {
+    public String removeDispose(@RequestParam("disposeId") Long disposeId, Principal principal) {
         Dispose dispose = disposeRepository.findById(disposeId).orElse(null);
         if (dispose != null && dispose.getUser().getUsername().equals(principal.getName())) {
             disposeRepository.delete(dispose);
