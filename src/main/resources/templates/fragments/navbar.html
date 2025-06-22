@@ -2,31 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
         <div th:fragment="navbar">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                <div class="container">
-                    <a class="navbar-brand" href="/search">e-Scambo</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+                <div class="container-fluid px-4">
+                    <a class="navbar-brand fw-bold text-primary fs-4" href="/search">e-Scambo</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarToggler">
-                        <ul class="navbar-nav me-auto">
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarResponsive">
+                        <ul class="navbar-nav mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a th:class="nav-link" th:classappend="${currentPage == 'search'} ? 'active' : ''" th:href="@{/search}">Pesquisar</a>
+                                <a th:class="nav-link" th:classappend="${currentPage == 'search'} ? 'active text-primary fw-semibold' : ''" th:href="@{/search}">
+                                    <i class="bi bi-search"></i> Pesquisar
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:classappend="${currentPage == 'negotiations'} ? 'active' : ''" th:href="@{/negotiations}">Negociações em andamento</a>
+                                <a class="nav-link" th:classappend="${currentPage == 'negotiations'} ? 'active text-primary fw-semibold' : ''" th:href="@{/negotiations}">
+                                    <i class="bi bi-handshake"></i> Negociações
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:classappend="${currentPage == 'wishlist'} ? 'active' : ''" th:href="@{/wishlist}">Lista de desejos</a>
+                                <a class="nav-link" th:classappend="${currentPage == 'wishlist'} ? 'active text-primary fw-semibold' : ''" th:href="@{/wishlist}">
+                                    <i class="bi bi-heart"></i> Desejos
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:classappend="${currentPage == 'disposelist'} ? 'active' : ''" th:href="@{/disposelist}">Meus itens</a>
+                                <a class="nav-link" th:classappend="${currentPage == 'disposelist'} ? 'active text-primary fw-semibold' : ''" th:href="@{/disposelist}">
+                                    <i class="bi bi-box"></i> Meus itens
+                                </a>
                             </li>
                         </ul>
                         <div class="dropdown">
-                            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.name}">username</button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#">Excluir conta</a></li>
+                            <button class="btn btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span th:text="${#authentication.name}">username</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item text-danger" href="#">Excluir conta</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form th:action="@{/logout}" method="post">
