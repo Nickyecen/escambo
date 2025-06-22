@@ -18,49 +18,72 @@ public class AdmController {
 
     @Autowired private UserRepository userRepository;
     @Autowired private MaintenanceService maintenanceService;
+    @Autowired private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN'))")
     @PostMapping("/maintenance/on")
     public String enableMaintenance(Principal principal) {
         maintenanceService.setMaintenanceMode(true, principal.getName());
-        return "redirect:/adm";
+        return "redirect:/adm/administrator";
     }
 
     @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN'))")
     @PostMapping("/maintenance/off")
     public String disableMaintenance(Principal principal) {
         maintenanceService.setMaintenanceMode(false, principal.getName());
-        return "redirect:/adm";
+        return "redirect:/adm/administrator";
     }
 
-    // Lista todos os usuários e moderadores
-   @GetMapping("/moderators")
-    public String listModerators(Model model) {
-    model.addAttribute("users", userRepository.findAll());
-    model.addAttribute("maintenanceMode", maintenanceService.isMaintenanceMode());
-    return "pages/moderators";
+    // Painel admin
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/administrator")
+    public String adminPanel(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("maintenanceMode", maintenanceService.isMaintenanceMode());
+        return "pages/administrator";
     }
 
     // Promove usuário a moderador
-    @PostMapping("/moderators/add")
+    @PostMapping("/administrator/moderators/add")
     public String addModerator(@RequestParam Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             user.setRole("ROLE_MOD");
             userRepository.save(user);
         }
-        return "redirect:/adm/moderators";
+        return "redirect:/adm/administrator";
     }
 
     // Remove papel de moderador
-    @PostMapping("/moderators/remove")
+    @PostMapping("/administrator/moderators/remove")
     public String removeModerator(@RequestParam Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null && "ROLE_MOD".equals(user.getRole())) {
-            user.setRole("ROLE_USER");
-            userRepository.save(user);
+            userRepository.delete(user);
         }
-        return "redirect:/adm/moderators";
+        return "redirect:/adm/administrator";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/administrator/moderators/create")
+    public String createModerator(@RequestParam String username,
+                                  @RequestParam String password,
+                                  Model model) {
+        if (userRepository.findByUsername(username) != null) {
+            model.addAttribute("error", "Já existe um usuário com esse nome.");
+            model.addAttribute("username", username);
+            model.addAttribute("users", userRepository.findAll());
+            model.addAttribute("maintenanceMode", maintenanceService.isMaintenanceMode());
+            return "pages/administrator";
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("ROLE_MOD");
+        userRepository.save(user);
+
+        return "redirect:/adm/administrator";
     }
 
 }

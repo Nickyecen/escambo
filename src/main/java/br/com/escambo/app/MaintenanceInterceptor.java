@@ -7,6 +7,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Component
 public class MaintenanceInterceptor implements HandlerInterceptor {
@@ -17,11 +20,19 @@ public class MaintenanceInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         String uri = request.getRequestURI();
-        // Permite acesso à área administrativa mesmo em manutenção
-        if (maintenanceService.isMaintenanceMode() && !uri.startsWith("/admin")) {
-            response.sendRedirect("/maintenance");
-            return false;
+
+        if (maintenanceService.isMaintenanceMode()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            boolean isAdmin = auth != null && auth.isAuthenticated() &&
+                    auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+            if (!isAdmin) {
+                response.sendRedirect("/maintenance");
+                return false;
+            }
         }
+
         return true;
     }
 }

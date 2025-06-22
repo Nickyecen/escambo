@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/main :: html(
+          pageTitle='Administração',
+          currentPage='adm',
+          content=~{::main}
+      )}">
+
+<main>
+    <div class="container mt-5">
+
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <div th:if="${error}">
+                <div class="position-fixed top-25 start-50 translate-middle-x mt-4 px-4 py-2 border border-danger rounded shadow-sm" style="background-color: rgba(255, 0, 0, 0.2); z-index: 1050;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-danger small fw-semibold" th:text="${error}">Já existe um usuário com esse nome.</span>
+                        <button type="button" class="btn-close ms-3" aria-label="Fechar" onclick="this.parentElement.parentElement.remove()"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        Modo de manutenção:
+                        <span th:text="${maintenanceMode ? 'ATIVADO' : 'DESATIVADO'}"
+                              th:classappend="${maintenanceMode} ? 'text-danger fw-bold' : 'text-success fw-bold'">
+                            DESCONHECIDO
+                        </span>
+                    </h5>
+                    <div>
+                        <form th:if="${!maintenanceMode}"
+                              th:action="@{/adm/maintenance/on}" method="post" class="d-inline">
+                            <button class="btn btn-warning">Ativar</button>
+                        </form>
+                        <form th:if="${maintenanceMode}"
+                              th:action="@{/adm/maintenance/off}" method="post" class="d-inline">
+                            <button class="btn btn-success">Desativar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Gerenciar Moderadores</h5>
+                        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#createModForm" aria-expanded="false" aria-controls="createModForm">
+                            Adicionar Moderador
+                        </button>
+                    </div>
+                    <div class="collapse" id="createModForm">
+                        <form th:action="@{/adm/administrator/moderators/create}" method="post" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Nome de usuário</label>
+                                <input type="text" class="form-control" name="username" th:value="${username}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Senha</label>
+                                <input type="password" class="form-control" name="password" required>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button class="btn btn-primary w-100">Criar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <h4>Usuários</h4>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuário</th>
+                        <th>Tipo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}">1</td>
+                        <td th:text="${user.username}">usuario</td>
+                        <td th:text="${user.role == 'ROLE_MOD' ? 'Moderador' : (user.role == 'ROLE_ADMIN' ? 'Administrador' : 'Usuário')}">tipo</td>
+                        <td>
+                            <form th:if="${user.role == 'ROLE_MOD'}" th:action="@{/adm/administrator/moderators/remove}" method="post" class="d-inline">
+                                <input type="hidden" name="userId" th:value="${user.id}">
+                                <button class="btn btn-sm btn-danger">Remover Moderador</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div sec:authorize="!hasAuthority('ROLE_ADMIN')">
+            <p class="text-danger">Acesso negado. Você não tem permissão para ver esta página.</p>
+        </div>
+
+</div>
+
+</main>
+</html>

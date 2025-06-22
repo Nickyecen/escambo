@@ -36,6 +36,14 @@
                                 <span th:text="${#authentication.name}">username</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <span sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                    <li>
+                                        <a class="dropdown-item text-danger fw-bold" th:href="@{/adm/administrator}">
+                                            <i class="bi bi-shield-lock"></i> Administração
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </span>
                                 <li><a class="dropdown-item text-danger" href="#">Excluir conta</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
