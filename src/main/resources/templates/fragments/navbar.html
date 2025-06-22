@@ -11,22 +11,22 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarResponsive">
                         <ul class="navbar-nav mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a th:class="nav-link" th:classappend="${currentPage == 'search'} ? 'active text-primary fw-semibold' : ''" th:href="@{/search}">
+                                <a th:class="nav-link" th:classappend="${currentPage == 'search'} ? 'active text-primary' : ''" th:href="@{/search}">
                                     <i class="bi bi-search"></i> Pesquisar
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:classappend="${currentPage == 'negotiations'} ? 'active text-primary fw-semibold' : ''" th:href="@{/negotiations}">
-                                    <i class="bi bi-handshake"></i> Negociações
+                                <a class="nav-link" th:classappend="${currentPage == 'negotiations'} ? 'active text-primary' : ''" th:href="@{/negotiations}">
+                                    <i class="bi bi-arrow-left-right"></i> Negociações
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:classappend="${currentPage == 'wishlist'} ? 'active text-primary fw-semibold' : ''" th:href="@{/wishlist}">
+                                <a class="nav-link" th:classappend="${currentPage == 'wishlist'} ? 'active text-primary' : ''" th:href="@{/wishlist}">
                                     <i class="bi bi-heart"></i> Desejos
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:classappend="${currentPage == 'disposelist'} ? 'active text-primary fw-semibold' : ''" th:href="@{/disposelist}">
+                                <a class="nav-link" th:classappend="${currentPage == 'disposelist'} ? 'active text-primary' : ''" th:href="@{/disposelist}">
                                     <i class="bi bi-box"></i> Meus itens
                                 </a>
                             </li>
