@@ -23,6 +23,9 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    @Column(unique = true)
+    private String email;
+
     private String password;
 
     private String role;
@@ -36,7 +39,7 @@ public class User {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dispose> disposetions = new ArrayList<>();   
+    private List<Dispose> disposetions = new ArrayList<>();
 
     public List<Wish> getWishes() {
         return wishes;
@@ -94,4 +97,11 @@ public class User {
         this.banned = banned;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
