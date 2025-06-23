@@ -10,10 +10,13 @@ import java.util.List;
 import br.com.escambo.app.model.DisposeRepository;
 import br.com.escambo.app.model.ItemRepository;
 import br.com.escambo.app.model.UserRepository;
+import br.com.escambo.app.model.dto.ItemDTO;
 import br.com.escambo.app.model.entities.Dispose;
 import br.com.escambo.app.model.entities.Item;
+import br.com.escambo.app.model.entities.ItemRequest;
 import br.com.escambo.app.model.entities.User;
 import br.com.escambo.app.model.MatchService;
+import br.com.escambo.app.model.ItemRequestRepository;
 
 @Controller
 @RequestMapping("/disposelist")
@@ -22,6 +25,7 @@ public class DisposeController {
     @Autowired ItemRepository itemRepository;
     @Autowired UserRepository userRepository;
     @Autowired MatchService matchService;
+    @Autowired ItemRequestRepository itemRequestRepository;
 
     @GetMapping
     public String listDispos(Model model, Principal principal) {
@@ -33,25 +37,32 @@ public class DisposeController {
     }
 
     @PostMapping("/add")
-    public String addDispose(@RequestParam("itemId") Long itemId, Principal principal, Model model) {
+    public String addDispose(ItemDTO itemDTO, Principal principal, Model model) {
         User user = userRepository.findByUsername(principal.getName());
-        Item item = itemRepository.findById(itemId).orElse(null);
+        Item item = itemRepository.findByItemname(itemDTO.getItemname());
         if (item == null) {
-            model.addAttribute("error", "Item não aprovado.");
+            // Item não existe, cria pedido de aprovação
+            ItemRequest req = new ItemRequest();
+            req.setItemname(itemDTO.getItemname());
+            req.setRequestedBy(user.getUsername());
+            req.setCategory(itemDTO.getCategory());
+            req.setVolume(itemDTO.getVolume());
+            req.setAuthor(itemDTO.getAuthor());
+            itemRequestRepository.save(req);
+            model.addAttribute("error", "Item enviado para aprovação.");
             return "redirect:/disposelist";
         }
-        boolean exists = disposeRepository.findByItemId(itemId)
+        boolean exists = disposeRepository.findByItemId(item.getId())
             .stream().anyMatch(d -> d.getUser().getId().equals(user.getId()));
         if (!exists) {
             Dispose dispose = new Dispose();
             dispose.setUser(user);
             dispose.setItem(item);
             disposeRepository.save(dispose);
-            // Chama o match automático
             matchService.procurarMatchesParaUsuario(user);
         }
         return "redirect:/disposelist";
-    }
+    }   
 
     @PostMapping("/remove")
     public String removeDispose(@RequestParam("disposeId") Long disposeId, Principal principal) {
