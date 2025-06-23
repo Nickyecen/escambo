@@ -3,7 +3,6 @@ package br.com.escambo.app.control;
 import br.com.escambo.app.model.MaintenanceService;
 import br.com.escambo.app.model.UserRepository;
 import br.com.escambo.app.model.MaintenanceLogRepository;
-import br.com.escambo.app.model.entities.MaintenanceLog;
 import br.com.escambo.app.model.entities.User;
 import org.springframework.ui.Model;
 
@@ -49,7 +48,7 @@ public class AdmController {
 
     // Promove usuário a moderador
     @PostMapping("/administrator/moderators/add")
-    public String addModerator(@RequestParam Long userId) {
+    public String addModerator(@RequestParam("userId") Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             user.setRole("ROLE_MOD");
@@ -60,7 +59,7 @@ public class AdmController {
 
     // Remove papel de moderador
     @PostMapping("/administrator/moderators/remove")
-    public String removeModerator(@RequestParam Long userId) {
+    public String removeModerator(@RequestParam("userId") Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null && "ROLE_MOD".equals(user.getRole())) {
             userRepository.delete(user);
@@ -70,8 +69,8 @@ public class AdmController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/administrator/moderators/create")
-    public String createModerator(@RequestParam String username,
-                                  @RequestParam String password,
+    public String createModerator(@RequestParam("username") String username,
+                                  @RequestParam("password") String password,
                                   Model model) {
         if (userRepository.findByUsername(username) != null) {
             model.addAttribute("error", "Já existe um usuário com esse nome.");

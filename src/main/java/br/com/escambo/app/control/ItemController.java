@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import br.com.escambo.app.model.entities.Item;
 import br.com.escambo.app.model.ItemRepository;
-import br.com.escambo.app.model.entities.ItemRequest;
-import br.com.escambo.app.model.ItemRequestRepository;
 import br.com.escambo.app.model.ItemService;
 
 @RestController
@@ -27,7 +25,7 @@ public class ItemController {
         return itemRepository.findByItemnameContainingIgnoreCase(query);
     }
     @PostMapping("/request")
-    public String requestItem(@RequestParam String itemname, Principal principal) {
+    public String requestItem(@RequestParam("itemname") String itemname, Principal principal) {
         return itemService.requestItem(itemname, principal.getName());
     }
 

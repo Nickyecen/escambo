@@ -41,7 +41,7 @@ import br.com.escambo.app.model.entities.User;
     }
 
     @PostMapping("/search/propose")
-    public String proposeNegotiation(@RequestParam Long disposeId, @RequestParam Long proposerDisposeId, Principal principal) {
+    public String proposeNegotiation(@RequestParam("disposeId") Long disposeId, @RequestParam("proposerDisposeId") Long proposerDisposeId, Principal principal) {
         Dispose targetDispose = disposeRepository.findById(disposeId).orElse(null);
         Dispose proposerDispose = disposeRepository.findById(proposerDisposeId).orElse(null);
         if (targetDispose == null || proposerDispose == null) return "redirect:/search";

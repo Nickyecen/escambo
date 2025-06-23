@@ -19,8 +19,6 @@ public class MaintenanceInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
-        String uri = request.getRequestURI();
-
         if (maintenanceService.isMaintenanceMode()) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

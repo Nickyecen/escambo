@@ -20,7 +20,7 @@ public class TransactionHistoryController {
     @Autowired TransactionService transactionService;
 
     @PostMapping("/transactions/cancel")
-    public String cancelTransaction(@RequestParam Long transactionId, Principal principal) {
+    public String cancelTransaction(@RequestParam("transactionId") Long transactionId, Principal principal) {
         transactionService.cancelTransaction(transactionId, principal.getName());
         return "redirect:/transactions";
     }
