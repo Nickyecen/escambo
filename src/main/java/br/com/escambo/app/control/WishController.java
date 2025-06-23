@@ -33,7 +33,7 @@ public class WishController {
     }
 
     @PostMapping("/add")
-public String addWish(@RequestParam Long itemId, Principal principal, Model model) {
+public String addWish(@RequestParam("itemId") Long itemId, Principal principal, Model model) {
     User user = userRepository.findByUsername(principal.getName());
     Item item = itemRepository.findById(itemId).orElse(null);
     if (item == null) {
