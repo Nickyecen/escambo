@@ -17,8 +17,17 @@ import jakarta.persistence.OneToMany;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String itemname;
+
+    @Column
+    private String category; // Might be swapped by a table
+
+    @Column
+    private String volume;
+
+    @Column
+    private String author;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -27,6 +36,30 @@ import jakarta.persistence.OneToMany;
     @JsonManagedReference
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dispose> disposetions = new ArrayList<>();
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public Long getId() {
         return id;
