@@ -2,7 +2,6 @@ package br.com.escambo.app.control;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import br.com.escambo.app.model.ModService;
@@ -15,8 +14,8 @@ public class ModController {
     @Autowired
     private ModService modService;
     @PostMapping("/{modId}/{itemName}/{approval}")
-    public ResponseEntity<Void> approveItem(@PathVariable Long modId, 
-        @PathVariable String itemName, @PathVariable boolean approval) {
+    public ResponseEntity<Void> approveItem(@PathVariable("modId") Long modId, 
+        @PathVariable("itemName") String itemName, @PathVariable("approval") boolean approval) {
         boolean wasApproved = modService.approveItem(modId, itemName, approval);
         if (wasApproved) {
             return ResponseEntity.noContent().build();
@@ -26,8 +25,8 @@ public class ModController {
         }
     }
     @GetMapping("/{modId}/banhistory/{userId}")
-    public ResponseEntity<List<Interaction>> getBanHistory(@PathVariable Long modId, 
-            @PathVariable Long userId) {
+    public ResponseEntity<List<Interaction>> getBanHistory(@PathVariable("modId") Long modId, 
+            @PathVariable("userId") Long userId) {
         List<Interaction> banHistory = modService.getBanHistory(modId, userId);
         if (banHistory == null || banHistory.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -37,7 +36,7 @@ public class ModController {
     }
 
     @PostMapping("/{modId}/ban")
-    public ResponseEntity<Void> banUser(@PathVariable Long modId, 
+    public ResponseEntity<Void> banUser(@PathVariable("modId") Long modId, 
             @RequestParam("username") String usernameBanned) {
         boolean wasBanned = modService.banUserByUsername(modId, usernameBanned);
         // pega o id do moderador caso a gente queira registrar quem fez o banimento
@@ -49,7 +48,7 @@ public class ModController {
         }
     }
     @PostMapping("/{modId}/unban")
-    public ResponseEntity<Void> unbanUser(@PathVariable Long modId,
+    public ResponseEntity<Void> unbanUser(@PathVariable("modId") Long modId,
             @RequestParam("username") String usernameUnbanned) {
         boolean wasUnbanned = modService.unbanUserByUsername(modId, usernameUnbanned);
         if (wasUnbanned) {

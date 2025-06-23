@@ -24,7 +24,7 @@ public class RegisterAccountController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password, Model model) {
+    public String registerUser(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
         //username é unique, entao cancela o registro
         if (userService.findByUsername(username) != null) {
             model.addAttribute("error", "Já há usuário cadastrado com esse nome :(");
