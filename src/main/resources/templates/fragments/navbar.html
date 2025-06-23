@@ -42,13 +42,25 @@
                                             <i class="bi bi-shield-lock"></i> Administração
                                         </a>
                                     </li>
+                                </span>
+                                <span sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_MOD')">
                                     <li><hr class="dropdown-divider"></li>
                                 </span>
-                                <li><a class="dropdown-item text-danger" href="#">Excluir conta</a></li>
+                                <span sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_MOD')">
+                                    <li>
+                                        <a class="dropdown-item text-primary fw-bold" th:href="@{/mods/moderator}">
+                                            <i class="bi bi-person-badge"></i> Moderação
+                                        </a>
+                                    </li>
+                                </span>
+                                <span sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_MOD')">
+                                    <li><hr class="dropdown-divider"></li>
+                                </span>
+                                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash"></i> Excluir conta</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form th:action="@{/logout}" method="post">
-                                        <button class="dropdown-item" type="submit">Encerrar sessão</button>
+                                        <button class="dropdown-item" type="submit"><i class="bi bi-box-arrow-right"></i> Encerrar sessão</button>
                                     </form>
                                 </li>
                             </ul>
