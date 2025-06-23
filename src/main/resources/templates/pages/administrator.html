@@ -9,6 +9,7 @@
 
 <main>
     <div class="container mt-5">
+        <h1 class="mb-4">Painel da Administração</h1>
 
         <div sec:authorize="hasAuthority('ROLE_ADMIN')">
             <div th:if="${error}">
