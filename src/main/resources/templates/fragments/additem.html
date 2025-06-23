@@ -2,22 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="additem" class="card card-body container mt-5">
     <h3>Adicionar item</h3>
-    <form th:action="@{__${currentPage}__/add}" method="post">
+    <form th:action="@{__${currentPage}__/add}" method="post" th:object="${itemDTO}">
         <div class="mb-3">
-            <label for="username">Categoria</label>
-            <input type="text" class="form-control" id="username" name="username" autofocus="autofocus" required>
+            <label for="category">Categoria</label>
+            <input type="text" class="form-control" th:field="*{category}" autofocus="autofocus">
         </div>
         <div class="mb-3">
-            <label for="itemId">Título</label>
-            <input type="text" class="form-control" id="itemId" name="itemId" required >
+            <label for="itemname">Título</label>
+            <input type="text" class="form-control" th:field="*{itemname}" required>
         </div>
         <div class="mb-3">
-            <label for="username">Volume</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+            <label for="volume">Volume</label>
+            <input type="text" class="form-control" th:field="*{volume}">
         </div>
         <div class="mb-3">
-            <label for="username">Autor</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+            <label for="author">Autor</label>
+            <input type="text" class="form-control" th:field="*{author}">
         </div>
         <button type="submit" class="btn btn-success">Adicionar à lista</button>
     </form>

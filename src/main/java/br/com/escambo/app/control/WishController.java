@@ -33,12 +33,13 @@ public class WishController {
         List<Wish> wishes = user.getWishes();
         model.addAttribute("wishes", wishes);
         model.addAttribute("allItems", itemRepository.findAll());
+        model.addAttribute("itemDTO", new ItemDTO());
         return "pages/wishlist";
     }
 
     @PostMapping("/add")
     public String addWish(ItemDTO itemDTO, Principal principal, Model model) {
-    User user = userRepository.findByUsername(principal.getName());
+        User user = userRepository.findByUsername(principal.getName());
         Item item = itemRepository.findByItemname(itemDTO.getItemname());
         if (item == null) {
             // Item não existe, cria pedido de aprovação
@@ -63,7 +64,7 @@ public class WishController {
             matchService.procurarMatchesParaUsuario(user);
         }
         return "redirect:/wishlist";
-    }   
+    }
 
     @PostMapping("/remove")
     public String removeWish(@RequestParam("wishId") Long wishId, Principal principal) {

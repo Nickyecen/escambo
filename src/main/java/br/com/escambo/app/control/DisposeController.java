@@ -33,6 +33,7 @@ public class DisposeController {
         List<Dispose> disposes = user.getDisposetions();
         model.addAttribute("disposes", disposes);
         model.addAttribute("allItems", itemRepository.findAll());
+        model.addAttribute("itemDTO", new ItemDTO());
         return "pages/disposelist";
     }
 
