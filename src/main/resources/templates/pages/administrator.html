@@ -20,27 +20,6 @@
                 </div>
             </div>
             <div class="card mb-4">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">
-                        Modo de manutenção:
-                        <span th:text="${maintenanceMode ? 'ATIVADO' : 'DESATIVADO'}"
-                              th:classappend="${maintenanceMode} ? 'text-danger fw-bold' : 'text-success fw-bold'">
-                            DESCONHECIDO
-                        </span>
-                    </h5>
-                    <div>
-                        <form th:if="${!maintenanceMode}"
-                              th:action="@{/adm/maintenance/on}" method="post" class="d-inline">
-                            <button class="btn btn-warning">Ativar</button>
-                        </form>
-                        <form th:if="${maintenanceMode}"
-                              th:action="@{/adm/maintenance/off}" method="post" class="d-inline">
-                            <button class="btn btn-success">Desativar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0">Gerenciar Moderadores</h5>
@@ -66,30 +45,85 @@
                 </div>
             </div>
 
-            <h4>Usuários</h4>
-            <table class="table table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Usuário</th>
-                        <th>Tipo</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="user : ${users}">
-                        <td th:text="${user.id}">1</td>
-                        <td th:text="${user.username}">usuario</td>
-                        <td th:text="${user.role == 'ROLE_MOD' ? 'Moderador' : (user.role == 'ROLE_ADMIN' ? 'Administrador' : 'Usuário')}">tipo</td>
-                        <td>
-                            <form th:if="${user.role == 'ROLE_MOD'}" th:action="@{/adm/administrator/moderators/remove}" method="post" class="d-inline">
-                                <input type="hidden" name="userId" th:value="${user.id}">
-                                <button class="btn btn-sm btn-danger">Remover Moderador</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="mb-3">Usuários</h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuário</th>
+                                    <th>Tipo</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.id}">1</td>
+                                    <td th:text="${user.username}">usuario</td>
+                                    <td th:text="${user.role == 'ROLE_MOD' ? 'Moderador' : (user.role == 'ROLE_ADMIN' ? 'Administrador' : 'Usuário')}">tipo</td>
+                                    <td>
+                                        <form th:if="${user.role == 'ROLE_MOD'}" th:action="@{/adm/administrator/moderators/remove}" method="post" class="d-inline">
+                                            <input type="hidden" name="userId" th:value="${user.id}">
+                                            <button class="btn btn-sm btn-danger">Remover Moderador</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="card mb-4">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        Modo de manutenção:
+                        <span th:text="${maintenanceMode ? 'ATIVADO' : 'DESATIVADO'}"
+                              th:classappend="${maintenanceMode} ? 'text-danger fw-bold' : 'text-success fw-bold'">
+                            DESCONHECIDO
+                        </span>
+                    </h5>
+                    <div>
+                        <form th:if="${!maintenanceMode}"
+                              th:action="@{/adm/maintenance/on}" method="post" class="d-inline">
+                            <button class="btn btn-warning">Ativar</button>
+                        </form>
+                        <form th:if="${maintenanceMode}"
+                              th:action="@{/adm/maintenance/off}" method="post" class="d-inline">
+                            <button class="btn btn-success">Desativar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="mb-3">Histórico de Manutenções</h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Início</th>
+                                    <th>Fim</th>
+                                    <th>Usuário</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="i : ${#numbers.sequence(0, maintenanceLogs.size() - 1, 2)}">
+                                    <td th:text="${#temporals.format(maintenanceLogs[i].timestamp, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00</td>
+                                    <td th:text="${i + 1 < maintenanceLogs.size() ? #temporals.format(maintenanceLogs[i+1].timestamp, 'dd/MM/yyyy HH:mm') : '---'}">00/00/0000 00:00</td>
+                                    <td th:text="${maintenanceLogs[i].changedBy}">usuário</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div sec:authorize="!hasAuthority('ROLE_ADMIN')">

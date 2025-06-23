@@ -2,6 +2,8 @@ package br.com.escambo.app.control;
 
 import br.com.escambo.app.model.MaintenanceService;
 import br.com.escambo.app.model.UserRepository;
+import br.com.escambo.app.model.MaintenanceLogRepository;
+import br.com.escambo.app.model.entities.MaintenanceLog;
 import br.com.escambo.app.model.entities.User;
 import org.springframework.ui.Model;
 
@@ -19,6 +21,7 @@ public class AdmController {
     @Autowired private UserRepository userRepository;
     @Autowired private MaintenanceService maintenanceService;
     @Autowired private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+    @Autowired private MaintenanceLogRepository maintenanceLogRepository;
 
     @PreAuthorize("authentication.principal.authorities.contains(new org.springframework.security.core.authority.SimpleGrantedAuthority('ROLE_ADMIN'))")
     @PostMapping("/maintenance/on")
@@ -40,6 +43,7 @@ public class AdmController {
     public String adminPanel(Model model) {
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("maintenanceMode", maintenanceService.isMaintenanceMode());
+        model.addAttribute("maintenanceLogs", maintenanceLogRepository.findAll());
         return "pages/administrator";
     }
 
