@@ -47,6 +47,12 @@ import br.com.escambo.app.model.WishRepository;
             admin.setRole("ROLE_ADMIN");
             userRepository.save(admin);
 
+            User mod = new User();
+            mod.setUsername("mod");
+            mod.setPassword(passwordEncoder.encode("mod123"));
+            mod.setRole("ROLE_MOD");
+            userRepository.save(mod);
+
             List<String> items = new ArrayList<>();
             items.add("CD Capital Inicial - Acústico"); items.add("Livro Mafalda"); items.add("Gibi Turma da Mônica");
             items.add("CD Van Halen"); items.add("Caneta Bic");

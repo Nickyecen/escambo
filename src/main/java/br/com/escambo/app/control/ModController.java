@@ -10,13 +10,12 @@ import br.com.escambo.app.model.ModService;
 import br.com.escambo.app.model.entities.Interaction;
 
 @Controller
-@RequestMapping("/mods")
 public class ModController {
 
     @Autowired
     private ModService modService;
 
-    @PostMapping("/{modId}/{itemName}/{approval}")
+    @PostMapping("/mods/{modId}/{itemName}/{approval}")
     @ResponseBody
     public ResponseEntity<Void> approveItem(@PathVariable Long modId,
                                             @PathVariable String itemName,
@@ -29,7 +28,7 @@ public class ModController {
         }
     }
 
-    @GetMapping("/{modId}/banhistory/{userId}")
+    @GetMapping("/mods/{modId}/banhistory/{userId}")
     @ResponseBody
     public ResponseEntity<List<Interaction>> getBanHistory(@PathVariable Long modId,
                                                             @PathVariable Long userId) {
@@ -40,7 +39,7 @@ public class ModController {
         return ResponseEntity.ok(banHistory);
     }
 
-    @PostMapping("/{modId}/ban")
+    @PostMapping("/mods/{modId}/ban")
     @ResponseBody
     public ResponseEntity<Void> banUser(@PathVariable Long modId,
                                         @RequestParam("username") String usernameBanned) {
@@ -52,7 +51,7 @@ public class ModController {
         }
     }
 
-    @PostMapping("/{modId}/unban")
+    @PostMapping("/mods/{modId}/unban")
     @ResponseBody
     public ResponseEntity<Void> unbanUser(@PathVariable Long modId,
                                           @RequestParam("username") String usernameUnbanned) {
@@ -64,7 +63,7 @@ public class ModController {
         }
     }
 
-    @GetMapping("/moderator")
+    @GetMapping("/mods")
     public String showModeratorPage(Model model) {
         return "pages/moderator";
     }

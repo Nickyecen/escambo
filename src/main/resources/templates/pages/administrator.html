@@ -29,7 +29,7 @@
                         </button>
                     </div>
                     <div class="collapse" id="createModForm">
-                        <form th:action="@{/adm/administrator/moderators/create}" method="post" class="row g-3">
+                        <form th:action="@{/adm/moderators/create}" method="post" class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Nome de usuário</label>
                                 <input type="text" class="form-control" name="username" th:value="${username}" required>
@@ -66,7 +66,7 @@
                                     <td th:text="${user.username}">usuario</td>
                                     <td th:text="${user.role == 'ROLE_MOD' ? 'Moderador' : (user.role == 'ROLE_ADMIN' ? 'Administrador' : 'Usuário')}">tipo</td>
                                     <td>
-                                        <form th:if="${user.role == 'ROLE_MOD'}" th:action="@{/adm/administrator/moderators/remove}" method="post" class="d-inline">
+                                        <form th:if="${user.role == 'ROLE_MOD'}" th:action="@{/adm/moderators/remove}" method="post" class="d-inline">
                                             <input type="hidden" name="userId" th:value="${user.id}">
                                             <button class="btn btn-sm btn-danger">Remover Moderador</button>
                                         </form>
