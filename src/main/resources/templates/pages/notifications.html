@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layouts/main :: html(
+          pageTitle='Notificações',
+          currentPage='notifications',
+          content=~{::main}
+      )}">
+<body>
+    <main>
+        <div class="container mt-5">
+            <h2>Notificações</h2>
+            <ul class="list-group mt-4" th:if="${notifications.size()} > 0">
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    th:each="notification : ${notifications}">
+                    <span>
+                        <span th:text="${#temporals.format(notification.timestamp, 'dd/MM/yyyy HH:mm')}">00/00/0000 00:00></span>
+                        -
+                        <span th:text="${notification.message}"></span>
+                    </span>
+                </li>
+            </ul>
+            <p class="text-muted" th:if="${notifications.size()} == 0">Nenhuma notificação.</p>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package br.com.escambo.app;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import br.com.escambo.app.model.entities.Dispose;
 import br.com.escambo.app.model.entities.Item;
 import br.com.escambo.app.model.entities.Negotiation;
+import br.com.escambo.app.model.entities.Notification;
 import br.com.escambo.app.model.entities.User;
 import br.com.escambo.app.model.entities.Wish;
 import br.com.escambo.app.model.DisposeRepository;
 import br.com.escambo.app.model.ItemRepository;
 import br.com.escambo.app.model.NegotiationRepository;
+import br.com.escambo.app.model.NotificationRepository;
 import br.com.escambo.app.model.UserRepository;
 import br.com.escambo.app.model.WishRepository;
 
@@ -26,6 +29,7 @@ import br.com.escambo.app.model.WishRepository;
                                             ItemRepository itemRepository,
                                             WishRepository wishRepository,
                                             DisposeRepository disposeRepository,
+                                            NotificationRepository notificationRepository,
                                             NegotiationRepository negotiationRepository) {
         return args -> {
 
@@ -119,6 +123,18 @@ import br.com.escambo.app.model.WishRepository;
             wish4.setUser(user2);
             wish4.setItem(item2);
             wishRepository.save(wish4);
+
+            Notification not1 = new Notification();
+            not1.setUsername(user1.getUsername());
+            not1.setMessage("Nova notificação");
+            not1.setTimestamp(LocalDateTime.now());
+            notificationRepository.save(not1);
+
+            Notification not2 = new Notification();
+            not2.setUsername(user2.getUsername());
+            not2.setMessage("Nova proposta");
+            not2.setTimestamp(LocalDateTime.now());
+            notificationRepository.save(not2);
         };
     }
 }

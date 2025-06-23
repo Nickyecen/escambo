@@ -47,7 +47,8 @@
                             <button class="btn btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span th:text="${#authentication.name}">username</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <ul class="dropdown-menu dropdown-menu-lg-end shadow">
+                                <li><a class="dropdown-item" th:href=@{/notifications}><i class="bi bi-bell"></i> Notificações</a></li>
                                 <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash"></i> Excluir conta</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
