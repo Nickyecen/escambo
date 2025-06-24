@@ -33,6 +33,7 @@ import br.com.escambo.app.model.entities.Dispose;
         if(Objects.isNull(query) || query.isBlank()) return "pages/search";
 
         List<Dispose> disposes = new ArrayList<>();
+        List<Dispose> proposerdisposes = disposeRepository.findByUserUsername(principal.getName());
 
         switch (filter) {
             case "itemname":
@@ -50,6 +51,7 @@ import br.com.escambo.app.model.entities.Dispose;
         }
 
         model.addAttribute("disposes", disposes);
+        model.addAttribute("proposerDisposes", proposerdisposes);
 
         return "pages/searchresults";
     }

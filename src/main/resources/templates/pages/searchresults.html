@@ -7,16 +7,31 @@
       )}">
 <main>
 <body>
-<!-- Search Bar (below navbar with padding) -->
 <div class="container mt-4">
     <div th:replace="~{fragments/searchbar :: searchbar}"></div>
 </div>
 
-<!-- Search Results -->
 <div class="container mt-4">
     <h4 th:text="'Resultados:'"></h4>
-    <ul class="list-group mt-3">
-        <li class="list-group-item" th:each="dispose : ${disposes}" th:text="${dispose.user.username} + ': ' + ${dispose.item.itemname}"></li>
+    <ul class="list-group mt-3" th:if="${disposes.size()} > 0">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            th:each="dispose : ${disposes}">
+            <span>
+                <span th:text="${dispose.user.username} + ': ' + ${dispose.item.itemname}"></span>
+            </span>
+            <div>
+                <form th:action="@{/search/propose}" method="post">
+                    <div class="input-group mb-3">
+                        <select class="form-select" name="proposerDisposeId" required>
+                            <option value="" disabled selected>Selecione item para propor</option>
+                            <option th:each="proposerDispose : ${proposerDisposes}" th:value="${proposerDispose.id}" th:text="${proposerDispose.item.itemname}">Item</option>
+                        </select>
+                        <input type="hidden" name="disposeId" th:value="${dispose.id}"/>
+                        <button type="submit" class="btn btn-success">Propor negociação</button>
+                    </div>
+                </form>
+            </div>
+        </li>
     </ul>
 </div>
 </body>
