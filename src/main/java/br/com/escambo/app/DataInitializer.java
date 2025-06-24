@@ -76,17 +76,40 @@ import br.com.escambo.app.model.WishRepository;
             req2.setRequestedBy(user2.getUsername());
             itemRequestRepository.save(req2);
 
-            List<String> items = new ArrayList<>();
-            items.add("CD Capital Inicial - Acústico"); items.add("Livro Mafalda"); items.add("Gibi Turma da Mônica");
-            items.add("CD Van Halen"); items.add("Caneta Bic");
+            Item itemA = new Item();
+            itemA.setItemname("CD Capital Inicial - Acústico");
+            itemA.setCategory("Música");
+            itemA.setVolume("Volume único");
+            itemA.setAuthor("Capital Inicial");
+            itemRepository.save(itemA);
 
-            for(String itemname : items) {
-                if (itemRepository.findByItemname(itemname) == null) {
-                    Item item = new Item();
-                    item.setItemname(itemname);
-                    itemRepository.save(item);
-                }
-            }
+            Item itemB = new Item();
+            itemB.setItemname("Livro Mafalda");
+            itemB.setCategory("Quadrinhos");
+            itemB.setVolume("Volume único");
+            itemB.setAuthor("Quino");
+            itemRepository.save(itemB);
+
+            Item itemC = new Item();
+            itemC.setItemname("Gibi Turma da Mônica");
+            itemC.setCategory("Quadrinhos");
+            itemC.setVolume("Volume único");
+            itemC.setAuthor("Maurício de Sousa");
+            itemRepository.save(itemC);
+
+            Item itemD = new Item();
+            itemD.setItemname("CD Van Halen");
+            itemD.setCategory("Música");
+            itemD.setVolume("Volume único");
+            itemD.setAuthor("Van Halen");
+            itemRepository.save(itemD);
+
+            Item itemE = new Item();
+            itemE.setItemname("Caneta Bic");
+            itemE.setCategory("Material Escolar");
+            itemE.setVolume("Padrão");
+            itemE.setAuthor("BIC");
+            itemRepository.save(itemE);
 
             Item item1 = itemRepository.findByItemname("CD Capital Inicial - Acústico");
             Item item2 = itemRepository.findByItemname("Livro Mafalda");
