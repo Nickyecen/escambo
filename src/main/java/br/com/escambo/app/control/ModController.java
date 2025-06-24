@@ -23,24 +23,24 @@ public class ModController {
     private UserService userService;
 
     @PostMapping("/{modId}/{itemName}/{approval}")
-    public String approveItem(@PathVariable Long modId,
-                              @PathVariable String itemName,
-                              @PathVariable boolean approval) {
+    public String approveItem(@PathVariable("modId") Long modId,
+                              @PathVariable("itemName") String itemName,
+                              @PathVariable("approval") boolean approval) {
         modService.approveItem(modId, itemName, approval);
-        return "redirect:/mods/moderator";
+        return "redirect:/mods";
     }
 
     @PostMapping("/{modId}/removeItem")
-    public String removeItem(@PathVariable Long modId,
+    public String removeItem(@PathVariable("modId") Long modId,
                              @RequestParam("itemname") String itemName) {
         modService.removeItem(modId, itemName);
-        return "redirect:/mods/moderator";
+        return "redirect:/mods";
     }
 
     @GetMapping("/{modId}/banhistory/{userId}")
     @ResponseBody
-    public ResponseEntity<List<Interaction>> getBanHistory(@PathVariable Long modId,
-                                                            @PathVariable Long userId) {
+    public ResponseEntity<List<Interaction>> getBanHistory(@PathVariable("modId") Long modId,
+                                                            @PathVariable("userId") Long userId) {
         List<Interaction> banHistory = modService.getBanHistory(modId, userId);
         if (banHistory == null || banHistory.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -49,20 +49,20 @@ public class ModController {
     }
 
     @PostMapping("/{modId}/ban")
-    public String banUser(@PathVariable Long modId,
+    public String banUser(@PathVariable("modId") Long modId,
                           @RequestParam("username") String usernameBanned) {
         modService.banUserByUsername(modId, usernameBanned);
-        return "redirect:/mods/moderator";
+        return "redirect:/mods";
     }
 
     @PostMapping("/{modId}/unban")
-    public String unbanUser(@PathVariable Long modId,
+    public String unbanUser(@PathVariable("modId") Long modId,
                             @RequestParam("username") String usernameUnbanned) {
         modService.unbanUserByUsername(modId, usernameUnbanned);
-        return "redirect:/mods/moderator";
+        return "redirect:/mods";
     }
 
-    @GetMapping("/moderator")
+    @GetMapping()
     public String showModeratorPage(Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("banHistory", modService.getAllBanLogs());
