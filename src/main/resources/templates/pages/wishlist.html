@@ -22,7 +22,19 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center"
                     th:each="wish : ${wishes}">
                     <span>
-                        <span th:text="${wish.item.itemname}"></span>
+                        <strong th:text="${wish.item.itemname}">Nome do item</strong><br>
+                        <small class="text-muted">
+                            <span th:if="${wish.item.category != null and !wish.item.category.isEmpty()}"
+                                  th:text="'Categoria: ' + ${wish.item.category}">Categoria</span>
+                            <span th:if="${wish.item.volume != null and !wish.item.volume.isEmpty()}"
+                                  th:text="' • Volume: ' + ${wish.item.volume}">Volume</span>
+                            <span th:if="${wish.item.author != null and !wish.item.author.isEmpty()}"
+                                  th:text="' • Autor: ' + ${wish.item.author}">Autor</span>
+                            <span th:if="${(wish.item.category == null or wish.item.category.isEmpty()) and
+                                          (wish.item.volume == null or wish.item.volume.isEmpty()) and
+                                          (wish.item.author == null or wish.item.author.isEmpty())}"
+                                  >Sem informações adicionais</span>
+                        </small>
                     </span>
                     <form th:action="@{/wishlist/remove}" method="post">
                         <input type="hidden" name="wishId" th:value="${wish.id}"/>
