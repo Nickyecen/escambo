@@ -35,6 +35,18 @@ public class ModController {
         }
     }
 
+    @PostMapping("/{modId}/removeItem")
+    @ResponseBody
+    public ResponseEntity<Void> removeItem(@PathVariable Long modId,
+                                           @RequestParam("itemname") String itemName) {
+        boolean wasRemoved = modService.removeItem(modId, itemName);
+        if (wasRemoved) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/{modId}/banhistory/{userId}")
     @ResponseBody
     public ResponseEntity<List<Interaction>> getBanHistory(@PathVariable Long modId,
@@ -75,6 +87,7 @@ public class ModController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("banHistory", modService.getAllBanLogs());
         model.addAttribute("itemRequests", modService.getAllItemRequests());
+        model.addAttribute("availableItems", modService.getAllItems());
         User logged = userService.findByUsername(principal.getUsername());
         model.addAttribute("modId", logged.getId());
 

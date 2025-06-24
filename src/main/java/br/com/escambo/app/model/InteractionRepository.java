@@ -9,4 +9,5 @@ import br.com.escambo.app.model.entities.Interaction;
 public interface InteractionRepository extends JpaRepository<Interaction, Long> {
     List<Interaction> findByTargetUsername(String targetUsername);
 
+    List<Interaction> findByTypeIn(List<String> types);
 }

@@ -9,6 +9,7 @@ import br.com.escambo.app.model.entities.User;
 import br.com.escambo.app.model.entities.Interaction;
 import java.util.Collections;
 import br.com.escambo.app.model.InteractionRepository;
+import br.com.escambo.app.model.entities.Item;
 @Service
 public class ModService {
 
@@ -63,7 +64,7 @@ public class ModService {
         }
         if(approval){
             try{
-                itemService.createItem(itemName);
+                itemService.createItemFromRequest(req);
             }
             catch (IllegalArgumentException e) {
                 return false;
@@ -72,6 +73,16 @@ public class ModService {
         itemService.deleteItemRequest(req);
         return true; //Deletou o pedido de item e criou o item se aprovado
 
+    }
+
+    @Transactional
+    public boolean removeItem(Long modId, String itemName) {
+        Item item = itemService.findItemByName(itemName);
+        if (item == null) {
+            return false; // Item não encontrado
+        }
+        itemService.deleteItem(item);
+        return true;
     }
 
     public List<Interaction> getBanHistory(Long modId, Long userId) {
@@ -86,11 +97,15 @@ public class ModService {
         return interactions;
     }
 
-    public List<Interaction> getAllBanLogs() {
-        return interactionRepository.findAll();
+   public List<Interaction> getAllBanLogs() {
+    return interactionRepository.findByTypeIn(List.of("ban", "unban"));
     }
 
     public List<ItemRequest> getAllItemRequests() {
         return itemService.getItemRequests();
+    }
+
+    public List<Item> getAllItems() {
+        return itemService.getAllItems();
     }
 }

@@ -50,7 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="log, iterStat : ${banHistory}" th:if="${iterStat.index} &lt; 10">
+                                <tr th:each="log, iterStat : ${banHistory}" th:if="${(log.type == 'ban' or log.type == 'unban') and iterStat.index &lt; 10}">
                                     <td th:text="${log.targetUsername}">usuário</td>
                                     <td th:text="${log.type == 'ban' ? 'Banido' : (log.type == 'unban' ? 'Desbanido' : log.type)}">estado</td>
                                     <td th:text="${log.sourceUsername}">moderador</td>
@@ -66,7 +66,7 @@
         <div class="container mt-5">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h3 class="mb-3">Moderação de Pedidos</h3>
+                    <h3 class="mb-3">Gerenciamento de Itens</h3>
                     <h5>Pedidos de Itens</h5>
                     <div style="max-height: 400px; overflow-y: auto;">
                         <table class="table table-striped">
@@ -80,8 +80,13 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr th:each="request : ${itemRequests}">
+                            <tbody th:if="${itemRequests.isEmpty()}">
+                                <tr>
+                                    <td colspan="6" class="text-center">Nenhum pedido de item encontrado.</td>
+                                </tr>
+                            </tbody>
+                            <tbody th:each="request : ${itemRequests}">
+                                <tr>
                                     <td th:text="${#strings.isEmpty(request.itemname) ? '' : request.itemname}">Item</td>
                                     <td th:text="${#strings.isEmpty(request.category) ? '' : request.category}">Categoria</td>
                                     <td th:text="${#strings.isEmpty(request.volume) ? '' : request.volume}">Volume</td>
@@ -93,6 +98,40 @@
                                         </form>
                                         <form th:action="@{|/mods/${modId}/${request.itemname}/false|}" method="post" style="display:inline;">
                                             <button class="btn btn-danger btn-sm" type="submit">Rejeitar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr class="my-4">
+                    <h5>Itens Disponíveis</h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome do Item</th>
+                                    <th>Categoria</th>
+                                    <th>Volume</th>
+                                    <th>Autor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody th:if="${availableItems.isEmpty()}">
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum item disponível.</td>
+                                </tr>
+                            </tbody>
+                            <tbody th:each="item : ${availableItems}">
+                                <tr>
+                                    <td th:text="${item.itemname}">Item</td>
+                                    <td th:text="${item.category}">Categoria</td>
+                                    <td th:text="${item.volume}">Volume</td>
+                                    <td th:text="${item.author}">Autor</td>
+                                    <td>
+                                        <form th:action="@{/mods/{modId}/removeItem(modId=${modId})}" method="post" style="display:inline;">
+                                            <input type="hidden" name="itemname" th:value="${item.itemname}" />
+                                            <button class="btn btn-warning btn-sm" type="submit">Remover</button>
                                         </form>
                                     </td>
                                 </tr>
