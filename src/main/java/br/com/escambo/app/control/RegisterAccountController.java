@@ -19,21 +19,18 @@ public class RegisterAccountController {
     @Autowired ItemService itemService;
 
     @GetMapping("/register")
-    public String showRegisterForm() {
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new User());
         return "pages/register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
-        //username é unique, entao cancela o registro
-        if (userService.findByUsername(username) != null) {
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.findByUsername(user.getUsername()) != null) {
             model.addAttribute("error", "Já há usuário cadastrado com esse nome :(");
             return "pages/register";
         }
-        //cria usuario novo
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
         userService.save(user);
         return "redirect:/login";
