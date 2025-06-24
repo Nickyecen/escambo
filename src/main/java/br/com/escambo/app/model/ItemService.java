@@ -1,5 +1,7 @@
 package br.com.escambo.app.model;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.escambo.app.model.entities.Item;
@@ -11,7 +13,7 @@ public class ItemService {
     @Autowired ItemRequestRepository itemRequestRepository;
 
     public Item createItem(String itemname) {
-        if (itemRepository.findByItemname(itemname) != null) 
+        if (itemRepository.findByItemname(itemname) != null)
             throw new IllegalArgumentException("Item já existe.");
         Item item = new Item();
         item.setItemname(itemname);
@@ -53,5 +55,9 @@ public class ItemService {
             throw new IllegalArgumentException("Pedido de item não encontrado: " + itemname);
         }
         return itemRequest;
+    }
+
+    public List<ItemRequest> getItemRequests() {
+        return itemRequestRepository.findAll();
     }
 }

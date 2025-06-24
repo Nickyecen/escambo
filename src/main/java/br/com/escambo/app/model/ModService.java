@@ -7,12 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.com.escambo.app.model.entities.ItemRequest;
 import br.com.escambo.app.model.entities.User;
 import br.com.escambo.app.model.entities.Interaction;
+import java.util.Collections;
+import br.com.escambo.app.model.InteractionRepository;
 @Service
 public class ModService {
 
     @Autowired  UserService userService;
     @Autowired  ItemService itemService;
     @Autowired  InteractionService interactionService;
+
+    @Autowired
+    private InteractionRepository interactionRepository;
+
     @Transactional
     public boolean banUserByUsername(Long modId, String username) {
         User userBan = userService.findByUsername(username);
@@ -78,6 +84,10 @@ public class ModService {
             throw new RuntimeException("Nada encontrado no historico do usuário: " + user.getUsername());
         }
         return interactions;
+    }
+
+    public List<Interaction> getAllBanLogs() {
+        return interactionRepository.findAll();
     }
 
 }
