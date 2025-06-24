@@ -90,4 +90,7 @@ public class ModService {
         return interactionRepository.findAll();
     }
 
+    public List<ItemRequest> getAllItemRequests() {
+        return itemService.getItemRequests();
+    }
 }

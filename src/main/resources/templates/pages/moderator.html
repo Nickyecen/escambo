@@ -13,50 +13,92 @@
 
         <div class="card mb-4">
             <div class="card-body">
-                <h5>Banir Cliente</h5>
-                <form th:action="@{|/mods/${modId}/ban|}" method="post">
-                    <div class="input-group mb-3">
-                        <select class="form-select" name="username" required>
-                            <option value="" disabled selected>Selecione um usuário</option>
-                            <option th:each="user : ${users}" th:if="${!user.banned}" th:value="${user.username}" th:text="${user.username}">username</option>
-                        </select>
-                        <button class="btn btn-danger" type="submit">Banir</button>
-                    </div>
-                </form>
+                <h3 class="mb-3">Gerenciamento de Usuários</h3>
+                    <h5>Banir Cliente</h5>
+                    <form th:action="@{|/mods/${modId}/ban|}" method="post">
+                        <div class="input-group mb-3">
+                            <select class="form-select" name="username" required>
+                                <option value="" disabled selected>Selecione um usuário</option>
+                                <option th:each="user : ${users}" th:if="${!user.banned}" th:value="${user.username}" th:text="${user.username}">username</option>
+                            </select>
+                            <button class="btn btn-danger" type="submit">Banir</button>
+                        </div>
+                    </form>
 
-                <hr class="my-4">
-                <h5>Desbanir Cliente</h5>
-                <form th:action="@{|/mods/${modId}/unban|}" method="post">
-                    <div class="input-group mb-3">
-                        <select class="form-select" name="username" required>
-                            <option value="" disabled selected>Selecione um usuário</option>
-                            <option th:each="user : ${users}" th:if="${user.banned}" th:value="${user.username}" th:text="${user.username}">username</option>
-                        </select>
-                        <button class="btn btn-success" type="submit">Desbanir</button>
-                    </div>
-                </form>
+                    <hr class="my-4">
+                    <h5>Desbanir Cliente</h5>
+                    <form th:action="@{|/mods/${modId}/unban|}" method="post">
+                        <div class="input-group mb-3">
+                            <select class="form-select" name="username" required>
+                                <option value="" disabled selected>Selecione um usuário</option>
+                                <option th:each="user : ${users}" th:if="${user.banned}" th:value="${user.username}" th:text="${user.username}">username</option>
+                            </select>
+                            <button class="btn btn-success" type="submit">Desbanir</button>
+                        </div>
+                    </form>
 
-                <hr class="my-4">
-                <h5>Histórico de Banimentos</h5>
-                <div style="max-height: 400px; overflow-y: auto;">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Usuário</th>
-                                <th>Estado</th>
-                                <th>Moderador</th>
-                                <th>Data</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="log : ${banHistory}">
-                                <td th:text="${log.targetUsername}">usuário</td>
-                                <td th:text="${log.type == 'ban' ? 'Banido' : (log.type == 'unban' ? 'Desbanido' : log.type)}">estado</td>
-                                <td th:text="${log.sourceUsername}">moderador</td>
-                                <td th:text="${log.timestamp}">data</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <hr class="my-4">
+                    <h5>Histórico de Banimentos</h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Usuário</th>
+                                    <th>Estado</th>
+                                    <th>Moderador</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="log : ${banHistory}">
+                                    <td th:text="${log.targetUsername}">usuário</td>
+                                    <td th:text="${log.type == 'ban' ? 'Banido' : (log.type == 'unban' ? 'Desbanido' : log.type)}">estado</td>
+                                    <td th:text="${log.sourceUsername}">moderador</td>
+                                    <td th:text="${log.timestamp}">data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-5"></div>
+        <div class="container mt-5">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="mb-3">Moderação de Pedidos</h3>
+                    <h5>Pedidos de Itens</h5>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome do Item</th>
+                                    <th>Categoria</th>
+                                    <th>Volume</th>
+                                    <th>Autor</th>
+                                    <th>Solicitado por</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="request : ${itemRequests}">
+                                    <td th:text="${#strings.isEmpty(request.itemname) ? '' : request.itemname}">Item</td>
+                                    <td th:text="${#strings.isEmpty(request.category) ? '' : request.category}">Categoria</td>
+                                    <td th:text="${#strings.isEmpty(request.volume) ? '' : request.volume}">Volume</td>
+                                    <td th:text="${#strings.isEmpty(request.author) ? '' : request.author}">Autor</td>
+                                    <td th:text="${#strings.isEmpty(request.requestedBy) ? '' : request.requestedBy}">Solicitado por</td>
+                                    <td>
+                                        <form th:action="@{|/mods/${modId}/${request.itemname}/true|}" method="post" style="display:inline;">
+                                            <button class="btn btn-success btn-sm" type="submit">Aprovar</button>
+                                        </form>
+                                        <form th:action="@{|/mods/${modId}/${request.itemname}/false|}" method="post" style="display:inline;">
+                                            <button class="btn btn-danger btn-sm" type="submit">Rejeitar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -11,12 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.escambo.app.model.entities.Dispose;
 import br.com.escambo.app.model.entities.Item;
+import br.com.escambo.app.model.entities.ItemRequest;
 import br.com.escambo.app.model.entities.Negotiation;
 import br.com.escambo.app.model.entities.Notification;
 import br.com.escambo.app.model.entities.User;
 import br.com.escambo.app.model.entities.Wish;
 import br.com.escambo.app.model.DisposeRepository;
 import br.com.escambo.app.model.ItemRepository;
+import br.com.escambo.app.model.ItemRequestRepository;
 import br.com.escambo.app.model.NegotiationRepository;
 import br.com.escambo.app.model.NotificationRepository;
 import br.com.escambo.app.model.UserRepository;
@@ -30,7 +32,8 @@ import br.com.escambo.app.model.WishRepository;
                                             WishRepository wishRepository,
                                             DisposeRepository disposeRepository,
                                             NotificationRepository notificationRepository,
-                                            NegotiationRepository negotiationRepository) {
+                                            NegotiationRepository negotiationRepository,
+                                            ItemRequestRepository itemRequestRepository) {
         return args -> {
 
             User user1 = new User();
@@ -56,6 +59,22 @@ import br.com.escambo.app.model.WishRepository;
             mod.setPassword(passwordEncoder.encode("mod123"));
             mod.setRole("ROLE_MOD");
             userRepository.save(mod);
+
+            ItemRequest req1 = new ItemRequest();
+            req1.setItemname("Senhor dos Anéis");
+            req1.setCategory("Literatura");
+            req1.setVolume("Volume 1");
+            req1.setAuthor("J.R.R. Tolkien");
+            req1.setRequestedBy(user1.getUsername());
+            itemRequestRepository.save(req1);
+
+            ItemRequest req2 = new ItemRequest();
+            req2.setItemname("A Revolução dos Bichos");
+            req2.setCategory("Literatura");
+            req2.setVolume("Único");
+            req2.setAuthor("George Orwell");
+            req2.setRequestedBy(user2.getUsername());
+            itemRequestRepository.save(req2);
 
             List<String> items = new ArrayList<>();
             items.add("CD Capital Inicial - Acústico"); items.add("Livro Mafalda"); items.add("Gibi Turma da Mônica");

@@ -74,6 +74,7 @@ public class ModController {
     public String showModeratorPage(Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("banHistory", modService.getAllBanLogs());
+        model.addAttribute("itemRequests", modService.getAllItemRequests());
         User logged = userService.findByUsername(principal.getUsername());
         model.addAttribute("modId", logged.getId());
 
