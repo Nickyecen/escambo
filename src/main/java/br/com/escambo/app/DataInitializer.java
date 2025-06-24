@@ -71,10 +71,42 @@ import br.com.escambo.app.model.WishRepository;
             ItemRequest req2 = new ItemRequest();
             req2.setItemname("A Revolução dos Bichos");
             req2.setCategory("Literatura");
-            req2.setVolume("Único");
+            req2.setVolume("Volume único");
             req2.setAuthor("George Orwell");
             req2.setRequestedBy(user2.getUsername());
             itemRequestRepository.save(req2);
+
+            ItemRequest req3 = new ItemRequest();
+            req3.setItemname("CD Capital Inicial - Acústico");
+            req3.setCategory("Música");
+            req2.setVolume("Volume único");
+            req3.setAuthor("Capital Inicial");
+            req3.setRequestedBy(user1.getUsername());
+            itemRequestRepository.save(req3);
+
+            ItemRequest req4 = new ItemRequest();
+            req4.setItemname("Livro Mafalda");
+            req4.setCategory("Quadrinhos");
+            req2.setVolume("Volume único");
+            req4.setAuthor("Quino");
+            req4.setRequestedBy(user1.getUsername());
+            itemRequestRepository.save(req4);
+
+            ItemRequest req5 = new ItemRequest();
+            req5.setItemname("Gibi Turma da Mônica");
+            req5.setCategory("Quadrinhos");
+            req2.setVolume("Volume único");
+            req5.setAuthor("Mauricio de Sousa");
+            req5.setRequestedBy(user2.getUsername());
+            itemRequestRepository.save(req5);
+
+            ItemRequest req6 = new ItemRequest();
+            req6.setItemname("CD Van Halen");
+            req6.setCategory("Música");
+            req2.setVolume("Volume único");
+            req6.setAuthor("Van Halen");
+            req6.setRequestedBy(user2.getUsername());
+            itemRequestRepository.save(req6);
 
             List<String> items = new ArrayList<>();
             items.add("CD Capital Inicial - Acústico"); items.add("Livro Mafalda"); items.add("Gibi Turma da Mônica");
