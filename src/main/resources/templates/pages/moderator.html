@@ -85,7 +85,7 @@
                                     <td colspan="6" class="text-center">Nenhum pedido de item encontrado.</td>
                                 </tr>
                             </tbody>
-                            <tbody th:each="request : ${itemRequests}">
+                            <tbody th:each="request, iterStat : ${itemRequests}" th:if="${iterStat.index &lt; 10}">
                                 <tr>
                                     <td th:text="${#strings.isEmpty(request.itemname) ? '' : request.itemname}">Item</td>
                                     <td th:text="${#strings.isEmpty(request.category) ? '' : request.category}">Categoria</td>
@@ -122,7 +122,7 @@
                                     <td colspan="5" class="text-center">Nenhum item disponível.</td>
                                 </tr>
                             </tbody>
-                            <tbody th:each="item : ${availableItems}">
+                            <tbody th:each="item, iterStat : ${availableItems}" th:if="${iterStat.index &lt; 10}">
                                 <tr>
                                     <td th:text="${item.itemname}">Item</td>
                                     <td th:text="${item.category}">Categoria</td>
