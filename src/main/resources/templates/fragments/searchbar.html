@@ -1,64 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="searchbar">
-<head>
-    <style>
-        #suggestions {
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ced4da;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #suggestions div {
-            padding: 8px;
-            cursor: pointer;
-        }
-        #suggestions div:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
-</head>
 <body>
     <form th:action="@{/search}" method="get" style="position: relative; width: 400px;">
+        <h4>Buscar por</h4>
+        <div class="btn-group mb-2" role="group" style="position: relative; width: 400px;">
+            <input type="radio" class="btn-check" name="filter" id="itemname" th:value="'itemname'" th:checked="${filter == null or filter == 'itemname'}" autocomplete="off">
+            <label class="btn btn-outline-primary" for="itemname">Título</label>
+
+            <input type="radio" class="btn-check" name="filter" id="category" th:value="'category'" th:checked="${filter == 'category'}" autocomplete="off">
+            <label class="btn btn-outline-primary" for="category">Categoria</label>
+
+            <input type="radio" class="btn-check" name="filter" id="volume" th:value="'volume'" th:checked="${filter == 'volume'}" autocomplete="off">
+            <label class="btn btn-outline-primary" for="volume">Volume</label>
+
+            <input type="radio" class="btn-check" name="filter" id="author" th:value="'author'" th:checked="${filter == 'author'}" autocomplete="off">
+            <label class="btn btn-outline-primary" for="author">Autor</label>
+        </div>
         <input type="text" id="search" class="form-control" name="q" placeholder="Pesquisar itens..." th:value="${query}">
         <div id="suggestions"></div>
     </form>
 </body>
-<script>
-document.getElementById('search').addEventListener('input', async function () {
-    const query = this.value;
-    const suggestions = document.getElementById('suggestions');
-
-    if (query.length < 2) {
-        suggestions.innerHTML = '';
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/items/search?q=` + encodeURIComponent(query));
-        const responseText = await response.text();
-        console.log("Raw response:", responseText);
-        const items = JSON.parse(responseText);//await response.json();
-        console.log("Suggestions received:", items);
-
-        suggestions.innerHTML = '';
-        items.forEach(item => {
-            const div = document.createElement('div');
-            div.textContent = item.itemname;
-            div.onclick = () => {
-                document.getElementById('search').value = item.itemname;
-                suggestions.innerHTML = '';
-                // Optionally redirect or trigger a real search
-            };
-            suggestions.appendChild(div);
-        });
-    } catch (err) {
-        console.error('Search failed:', err);
-    }
-});
-</script>
 </div>
 </html>

@@ -14,9 +14,9 @@
 
 <!-- Search Results -->
 <div class="container mt-4">
-    <h4 th:text="'Resultados para: ' + ${itemname}"></h4>
+    <h4 th:text="'Resultados:'"></h4>
     <ul class="list-group mt-3">
-        <li class="list-group-item" th:each="result : ${results}" th:text="${result} + ': ' + ${itemname}"></li>
+        <li class="list-group-item" th:each="dispose : ${disposes}" th:text="${dispose.user.username} + ': ' + ${dispose.item.itemname}"></li>
     </ul>
 </div>
 </body>

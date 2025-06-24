@@ -1,6 +1,7 @@
 package br.com.escambo.app.control;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +17,6 @@ import br.com.escambo.app.model.ItemRepository;
 import br.com.escambo.app.model.NegotiationService;
 import br.com.escambo.app.model.UserRepository;
 import br.com.escambo.app.model.entities.Dispose;
-import br.com.escambo.app.model.entities.Item;
-import br.com.escambo.app.model.entities.User;
 
 @Controller public class SearchController {
 
@@ -27,15 +26,30 @@ import br.com.escambo.app.model.entities.User;
     @Autowired UserRepository userRepository;
 
     @GetMapping("/search")
-    public String searchPage(@RequestParam(name = "q", required = false) String query, Model model) {
+    public String searchPage(@RequestParam(name = "filter", required = false, defaultValue = "itemname") String filter,
+                             @RequestParam(name = "q", required = false) String query,
+                             Model model,
+                             Principal principal) {
         if(Objects.isNull(query) || query.isBlank()) return "pages/search";
 
-        Item item = itemRepository.findByItemname(query);
-        List<Dispose> disposes = disposeRepository.findByItemId(item.getId());
-        List<String> usernames = disposes.stream().map(Dispose::getUser).map(User::getUsername).toList();
+        List<Dispose> disposes = new ArrayList<>();
 
-        model.addAttribute("itemname", item.getItemname());
-        model.addAttribute("results", usernames);
+        switch (filter) {
+            case "itemname":
+                disposes = disposeRepository.findByUserUsernameNotAndItemItemnameContainingIgnoreCase(principal.getName(), query);
+                break;
+            case "category":
+                disposes = disposeRepository.findByUserUsernameNotAndItemCategoryContainingIgnoreCase(principal.getName(), query);
+                break;
+            case "volume":
+                disposes = disposeRepository.findByUserUsernameNotAndItemVolumeContainingIgnoreCase(principal.getName(), query);
+                break;
+            case "author":
+                disposes = disposeRepository.findByUserUsernameNotAndItemAuthorContainingIgnoreCase(principal.getName(), query);
+                break;
+        }
+
+        model.addAttribute("disposes", disposes);
 
         return "pages/searchresults";
     }
