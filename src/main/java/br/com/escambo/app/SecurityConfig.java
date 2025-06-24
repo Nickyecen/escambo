@@ -16,7 +16,7 @@ public class SecurityConfig {
             )
             .formLogin(form -> form
                 .loginPage("/login")        // your custom login page
-                .defaultSuccessUrl("/search", true) // where to go on success
+                .defaultSuccessUrl("/", true) // where to go on success
                 .permitAll()
             )
             .logout(logout -> logout
