@@ -17,7 +17,21 @@
         <li class="list-group-item d-flex justify-content-between align-items-center"
             th:each="dispose : ${disposes}">
             <span>
-                <span th:text="${dispose.user.username} + ': ' + ${dispose.item.itemname}"></span>
+                <strong th:text="${dispose.user.username} + ': ' + ${dispose.item.itemname}"></strong>
+                <br>
+                <small class="text-muted">
+                    <span th:if="${dispose.item.category != null and !dispose.item.category.isEmpty()}"
+                          th:text="'Categoria: ' + ${dispose.item.category}">Categoria</span>
+                    <span th:if="${dispose.item.volume != null and !dispose.item.volume.isEmpty()}"
+                          th:text="' • Volume: ' + ${dispose.item.volume}">Volume</span>
+                    <span th:if="${dispose.item.author != null and !dispose.item.author.isEmpty()}"
+                          th:text="' • Autor: ' + ${dispose.item.author}">Autor</span>
+                    <span th:if="${(dispose.item.category == null or dispose.item.category.isEmpty()) and
+                                  (dispose.item.volume == null or dispose.item.volume.isEmpty()) and
+                                  (dispose.item.author == null or dispose.item.author.isEmpty())}">
+                        Sem informações adicionais
+                    </span>
+                </small>
             </span>
             <div>
                 <form th:action="@{/search/propose}" method="post">
