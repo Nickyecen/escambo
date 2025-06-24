@@ -40,8 +40,8 @@
                     <hr class="my-4">
                     <h5>Histórico de Banimentos</h5>
                     <div style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-primary">
+                            <thead class="table-light">
                                 <tr>
                                     <th>Usuário</th>
                                     <th>Estado</th>
@@ -69,8 +69,8 @@
                     <h3 class="mb-3">Gerenciamento de Itens</h3>
                     <h5>Pedidos de Itens</h5>
                     <div style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-primary">
+                            <thead class="table-light">
                                 <tr>
                                     <th>Nome do Item</th>
                                     <th>Categoria</th>
@@ -107,8 +107,8 @@
                     <hr class="my-4">
                     <h5>Itens Disponíveis</h5>
                     <div style="max-height: 400px; overflow-y: auto;">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-bordered table-primary">
+                            <thead class="table-light">
                                 <tr>
                                     <th>Nome do Item</th>
                                     <th>Categoria</th>
@@ -131,7 +131,7 @@
                                     <td>
                                         <form th:action="@{/mods/{modId}/removeItem(modId=${modId})}" method="post" style="display:inline;">
                                             <input type="hidden" name="itemname" th:value="${item.itemname}" />
-                                            <button class="btn btn-warning btn-sm" type="submit">Remover</button>
+                                            <button class="btn btn-danger btn-sm" type="submit">Remover</button>
                                         </form>
                                     </td>
                                 </tr>
