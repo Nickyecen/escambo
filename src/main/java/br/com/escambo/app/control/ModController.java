@@ -23,28 +23,18 @@ public class ModController {
     private UserService userService;
 
     @PostMapping("/{modId}/{itemName}/{approval}")
-    @ResponseBody
-    public ResponseEntity<Void> approveItem(@PathVariable Long modId,
-                                            @PathVariable String itemName,
-                                            @PathVariable boolean approval) {
-        boolean wasApproved = modService.approveItem(modId, itemName, approval);
-        if (wasApproved) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public String approveItem(@PathVariable Long modId,
+                              @PathVariable String itemName,
+                              @PathVariable boolean approval) {
+        modService.approveItem(modId, itemName, approval);
+        return "redirect:/mods/moderator";
     }
 
     @PostMapping("/{modId}/removeItem")
-    @ResponseBody
-    public ResponseEntity<Void> removeItem(@PathVariable Long modId,
-                                           @RequestParam("itemname") String itemName) {
-        boolean wasRemoved = modService.removeItem(modId, itemName);
-        if (wasRemoved) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public String removeItem(@PathVariable Long modId,
+                             @RequestParam("itemname") String itemName) {
+        modService.removeItem(modId, itemName);
+        return "redirect:/mods/moderator";
     }
 
     @GetMapping("/{modId}/banhistory/{userId}")
@@ -59,27 +49,17 @@ public class ModController {
     }
 
     @PostMapping("/{modId}/ban")
-    @ResponseBody
-    public ResponseEntity<Void> banUser(@PathVariable Long modId,
-                                        @RequestParam("username") String usernameBanned) {
-        boolean wasBanned = modService.banUserByUsername(modId, usernameBanned);
-        if (wasBanned) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public String banUser(@PathVariable Long modId,
+                          @RequestParam("username") String usernameBanned) {
+        modService.banUserByUsername(modId, usernameBanned);
+        return "redirect:/mods/moderator";
     }
 
     @PostMapping("/{modId}/unban")
-    @ResponseBody
-    public ResponseEntity<Void> unbanUser(@PathVariable Long modId,
-                                          @RequestParam("username") String usernameUnbanned) {
-        boolean wasUnbanned = modService.unbanUserByUsername(modId, usernameUnbanned);
-        if (wasUnbanned) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public String unbanUser(@PathVariable Long modId,
+                            @RequestParam("username") String usernameUnbanned) {
+        modService.unbanUserByUsername(modId, usernameUnbanned);
+        return "redirect:/mods/moderator";
     }
 
     @GetMapping("/moderator")
