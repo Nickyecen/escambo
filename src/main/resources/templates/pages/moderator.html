@@ -50,7 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="log : ${banHistory}">
+                                <tr th:each="log, iterStat : ${banHistory}" th:if="${iterStat.index} &lt; 10">
                                     <td th:text="${log.targetUsername}">usuário</td>
                                     <td th:text="${log.type == 'ban' ? 'Banido' : (log.type == 'unban' ? 'Desbanido' : log.type)}">estado</td>
                                     <td th:text="${log.sourceUsername}">moderador</td>
